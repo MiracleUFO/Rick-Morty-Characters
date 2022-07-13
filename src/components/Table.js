@@ -13,30 +13,10 @@ const Table = () => {
     const [groupedData, setGroupedData] = useState([]);
 
     const { filteredCharacters } = useSelector(state => state.characters);
+    const dispatch = useDispatch();
 
     const { data } = useQuery(GET_CHARACTERS);
     const results  = data?.characters.results;
-
-    const dispatch = useDispatch();
-
-    const groupDataByDate = useCallback(() => {
-        const groups = filteredCharacters.reduce((groups, character) => {
-            const date = character.created.split('T')[0];
-            if (!groups[date]) {
-              groups[date] = [];
-            }
-            groups[date].push(character);
-            return groups;
-          }, {});
-          
-          const groupArrays = Object.keys(groups).map((date) => {
-            return {
-              date,
-              characters: groups[date]
-            };
-          });
-          return groupArrays;
-    }, [filteredCharacters]);
 
     useEffect(() => {
         if (results?.length > 0) {
@@ -44,6 +24,25 @@ const Table = () => {
             dispatch(updateCharacters(results));
         }
     }, [results, dispatch]);
+
+    const groupDataByDate = useCallback(() => {
+        const groups = filteredCharacters.reduce((groups, character) => {
+            const date = character.created.split('T')[0];
+            if (!groups[date]) {
+                groups[date] = [];
+            }
+            groups[date].push(character);
+            return groups;
+        }, {});
+          
+        const groupArrays = Object.keys(groups).map((date) => {
+            return {
+                date,
+                characters: groups[date]
+            };
+        });
+        return groupArrays;
+    }, [filteredCharacters]);
 
     useEffect(() => {
         if (filteredCharacters.length > 0) {
