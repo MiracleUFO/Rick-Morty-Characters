@@ -1,0 +1,50 @@
+table {
+    width: 90vw;
+    margin: 40px auto;
+    color: #5a5a5a;
+    border-collapse: collapse;
+}
+
+thead tr {
+    background-color: #fafafa;
+    height: 60px;
+}
+
+tr {
+    height: 80px;
+}
+
+table tr:nth-of-type(odd) {
+    background-color: #fafafa;
+}
+
+table tr:nth-of-type(even) {
+   border: 1px solid aliceblue;
+}
+
+td img {
+    width: 70px;
+    max-width: 60%;
+    border-radius: 50%;
+}
+
+@media screen and (min-width: 800px) {
+    td img {
+        width: 120px;
+        max-width: 30%;
+    }
+}
+
+.group-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    height: 70px;
+    background-color: aliceblue !important;
+    border: 1px solid lightblue;
+}
+
+tbody {
+    margin-bottom: 20px;
+}
