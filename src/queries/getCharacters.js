@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 const GET_CHARACTERS = gql`
     query {
-        characters(page: 40) {
+        characters(page: 55) {
             results {
                 id,
                 name,

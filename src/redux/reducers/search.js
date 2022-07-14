@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   searchTerms: [],
   searchResults: []
-}
+};
 
 export const searchSlice = createSlice({
   name: 'search',
@@ -16,8 +16,8 @@ export const searchSlice = createSlice({
         state.searchResults = action.payload.length > 0 ? [...action.payload] : [];
     }
   },
-})
+});
 
-export const { updateSearch, updateSearchResults } = searchSlice.actions
+export const { updateSearch, updateSearchResults } = searchSlice.actions;
 
-export default searchSlice.reducer
+export default searchSlice.reducer;

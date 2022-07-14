@@ -1,0 +1,15 @@
+.loading, .error, .warning {
+    margin-top: 40px;
+}
+
+.loading {
+    color: #4c8bf5;
+}
+
+.error {
+    color: #b73239;
+}
+
+.warning {
+    color: #eed202;
+}

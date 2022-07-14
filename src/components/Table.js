@@ -8,6 +8,7 @@ import GET_CHARACTERS from '../queries/getCharacters';
 import { getUniqueValues } from '../helpers/getUniqueValues';
 
 import DateGroup from './DateGroup';
+import Message from './Message';
 
 import '../styles/Table.css';
 
@@ -20,7 +21,7 @@ const Table = () => {
 
     const dispatch = useDispatch();
 
-    const { data } = useQuery(GET_CHARACTERS);
+    const { data, loading, error } = useQuery(GET_CHARACTERS);
     const results  = data?.characters.results;
 
     useEffect(() => {
@@ -70,19 +71,25 @@ const Table = () => {
     }, [dispatch, searchResults, searchTerms]);
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Avatar</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Status</th>
-                    <th>Location</th>
-                </tr>
-            </thead>
-            {groupedData?.map((group, index) => <DateGroup key={index} date={group.date} characters={group.characters} />)}
-        </table>
+        <>
+        {results?.length > 0 ?
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Avatar</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Status</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                {groupedData?.map((group, index) => <DateGroup key={index} date={group.date} characters={group.characters} />)}
+            </table>
+        :
+            <Message loading={loading} error={error} data={results} />
+        }
+        </>
     );
 };
 
