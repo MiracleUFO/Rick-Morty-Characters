@@ -6,16 +6,80 @@
     color: white;
     background-color: #4c8bf5;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     width: 22.5vw;
     min-width: max-content;
-    padding: 5px 1vw;
+    padding: 8px 1vw;
     border-radius: 5px;
+    border: 1px outset aliceblue;
 }
 
 @media screen and (min-width: 800px) {
     .tag-card {
-        width: 10vw;
+        width: 9vw;
     }
+}
+
+.count {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    padding: 4px;
+    background-color: white;
+    color: #4c8bf5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    cursor: pointer;
+}
+
+.checkboxes-card {
+    display: none;
+    position: absolute;
+    width: 100%;
+    min-width: max-content;
+    padding: 20px;
+    flex-direction: column;
+    border: 2px solid #FAF9F6;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 20;
+    font-size: 0.9em;
+    top: 55%;
+    right: -20px;
+    box-shadow: 3px 5px 2px 0.5px rgba(0, 0, 0, 3%);
+    transition: all 0.2s ease;
+}
+
+.filters-container:hover .checkboxes-card, 
+.filters-container:focus .checkboxes-card {
+    display: flex;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+    color: #7d7e7e;
+}
+
+label {
+    padding-left: 10%;
+}
+
+label:hover, label:focus {
+    color: #5a5a5a;
+}
+
+.checkbox {
+    width: revert;
+    padding: revert;
+    margin: revert;
+    box-shadow: 2px 4px 2px 0.5px rgb(0 0 0 / 4%);
+}
+
+.checkbox:focus {
+    box-shadow: initial;
 }

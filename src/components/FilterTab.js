@@ -8,7 +8,7 @@ const FiltersTab = () => {
     return (
         <section className='filter-tab'>
             {Object.entries(filters).map(([key, value], index) =>
-                <Filter key={index} tag={key} />
+                <Filter key={index} tag={key} filters={value} />
             )}
         </section>
     )

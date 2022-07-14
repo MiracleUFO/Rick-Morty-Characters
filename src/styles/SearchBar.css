@@ -6,15 +6,17 @@ input {
     margin: 50px auto;
     background-color: rgb(0 0 0 / 3%);
     border: 1px solid transparent;
-    box-shadow: 3.5px 4px 3px 3px rgb(0 0 0 / 6%);
+    box-shadow: 3.5px 4px 3px 3px rgb(0 0 0 / 5%);
     transition: all 0.2s ease;
 }
 
 input:focus {
     background-color: aliceblue;
     outline: none;
-    border: 1px solid lightblue;
-    box-shadow: 5px 4px 3px 2px aliceblue;
+    border: 1px solid rgba(173,216,230, 70%);
+    box-shadow: 5px 4px 5px 1px aliceblue, 
+                -5px 4px 5px 1px aliceblue,
+                5px -4px 5px 1px aliceblue;
 }
 
 input::placeholder {

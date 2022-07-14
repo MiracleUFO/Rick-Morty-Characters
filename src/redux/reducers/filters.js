@@ -16,6 +16,7 @@ const initialState = {
             lastQuarter: false,
             lastThirtyDays: false,
             lastFifteenDays: false,
+            lastDay: false,
         }
     },
     filterResults: []
