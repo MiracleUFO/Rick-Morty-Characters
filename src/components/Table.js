@@ -54,7 +54,10 @@ const Table = () => {
     }, [filteredCharacters, groupDataByDate]);
 
     useEffect(() => {
-        if (searchTerms.length > 0 && searchResults.length > 0) {
+        if (
+            searchTerms.length > 0 &&
+            searchResults.length > 0
+        ) {
             const uniqueResults = getUniqueValues(searchResults);
             dispatch(updateCharacters(uniqueResults));
         } else {
