@@ -1,5 +1,5 @@
 const DateGroup = ({ date, characters }) => {
-    
+
     const formatDate = (givenDate) => {
         const formattedDate = new Date(givenDate);
         return formattedDate;
@@ -7,7 +7,7 @@ const DateGroup = ({ date, characters }) => {
 
     return (
             <tbody>
-                <tr className='group-title'>{formatDate(date).toDateString()}</tr>
+                <tr><td className='group-title'>{formatDate(date).toDateString()}</td></tr>
                 {characters?.map((character, index) => (
                         <tr key={index}>
                             <td>{formatDate(character.created).getHours()}:{formatDate(character.created).getMinutes()}</td>
@@ -19,7 +19,6 @@ const DateGroup = ({ date, characters }) => {
                         </tr>
                     )
                 )}
-                <br />
             </tbody>
     );
 };

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   allCharacters: [],
-  filteredCharacters: []
+  results: []
 }
 
 export const charactersSlice = createSlice({
@@ -10,10 +10,10 @@ export const charactersSlice = createSlice({
   initialState,
   reducers: {
     setCharacters: (state, action) => {
-      state.allCharacters = [...action.payload]
+      state.allCharacters = action.payload.length > 0 ? [...action.payload] : [];
     },
     updateCharacters: (state, action) => {
-        state.filteredCharacters = [...action.payload]
+        state.results = action.payload.length > 0 ? [...action.payload] : [];
     }
   },
 })

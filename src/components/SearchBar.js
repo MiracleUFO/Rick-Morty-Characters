@@ -1,0 +1,67 @@
+import { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { updateSearch, updateSearchResults } from '../redux/reducers/search';
+
+import '../styles/SearchBar.css';
+
+const SearchBar = () => {
+    const [search, setSearch] = useState('');
+
+    const { allCharacters }  = useSelector(state => state.characters);
+    const dispatch = useDispatch();
+
+    const getMostOccuring = useCallback((givenCoincidences) => {
+        const 
+            noOfSearchTerms = search.split(' ').length,
+            mostOccuring = givenCoincidences.filter(coincidence => coincidence.count >= noOfSearchTerms),
+            results = mostOccuring.map(({count, ...otherAttrs}) => otherAttrs);
+            return results;
+    }, [search]);
+
+    const filterCharacters = useCallback(() => {
+        if (search.trim()) {
+            const terms = search.trim().toLowerCase().split(' '), charactersCounts = [], newFilteredCharacters = [...allCharacters];
+
+            newFilteredCharacters.map(character => {
+                const   
+                    { id, name, gender, status, location, created, image } = character, 
+                    newCharacter = { id, name, gender, status, location, created, image },
+                    coincidence = {...newCharacter};
+
+                for (const [k, v] of Object.entries(newCharacter)) {
+                    terms.map(term => {
+                        const value = typeof v === 'string' ? v.toLowerCase() : v.name.toLowerCase();
+
+                        if (value.startsWith(term) || value.startsWith(term)) {
+                            coincidence.count = coincidence.count ? coincidence.count + 1 : 1;
+                        }
+                        return k;
+                    });
+                }
+
+                if (JSON.stringify(coincidence) !== '{}') {
+                    charactersCounts.push(coincidence);
+                }
+
+                const newArray = getMostOccuring(charactersCounts);
+                dispatch(updateSearchResults(newArray));
+                return character;
+            });
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, getMostOccuring, search]);
+
+    useEffect(() => {
+        if (search.trim()) {
+            dispatch(updateSearch(search.trim().toLowerCase().split(' ')));
+            filterCharacters(search);
+        }
+    }, [search, dispatch, filterCharacters]);
+
+    return(
+        <input value={search} onChange={(e) => setSearch(e.target.value)} />
+    );
+};
+
+export default SearchBar;
