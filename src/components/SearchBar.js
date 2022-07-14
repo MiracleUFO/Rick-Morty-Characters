@@ -54,6 +54,7 @@ const SearchBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, getMostOccuring, search]);
 
+    // Sets searchTerms array in store
     useEffect(() => {
         if (search.trim()) {
             dispatch(updateSearch(search.trim().toLowerCase().split(' ')));

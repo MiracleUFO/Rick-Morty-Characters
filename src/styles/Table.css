@@ -1,8 +1,18 @@
+.table-container {
+    position: relative;
+    width: 85vw;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
 table {
-    width: 90vw;
+    width: 100%;
     margin: 40px auto;
     color: #5a5a5a;
     border-collapse: collapse;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    white-space: nowrap;
 }
 
 thead tr {
@@ -43,6 +53,14 @@ td img {
     height: 70px;
     background-color: aliceblue !important;
     border: 2px solid lightblue;
+    width: 20vw;
+    min-width: fit-content;
+}
+
+@media screen and (min-width: 800px) {
+    .group-title {
+        width: revert;
+    }
 }
 
 tbody {

@@ -1,0 +1,21 @@
+.filters-container {
+    position: relative;
+}
+
+.tag-card {
+    color: white;
+    background-color: #4c8bf5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 22.5vw;
+    min-width: max-content;
+    padding: 5px 1vw;
+    border-radius: 5px;
+}
+
+@media screen and (min-width: 800px) {
+    .tag-card {
+        width: 10vw;
+    }
+}

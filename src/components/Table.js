@@ -71,7 +71,7 @@ const Table = () => {
     }, [dispatch, searchResults, searchTerms]);
 
     return (
-        <>
+        <div className='table-container'>
         {filteredCharacters?.length > 0 ?
             <table>
                 <thead>
@@ -89,7 +89,7 @@ const Table = () => {
         :
             <Message loading={loading} error={error} data={filteredCharacters} />
         }
-        </>
+        </div>
     );
 };
 

@@ -1,7 +1,17 @@
-const FilterTab = () => (
-    <section>
-        filter tab
-    </section>
-);
+import { useSelector } from 'react-redux';
+import Filter from './Filter';
 
-export default FilterTab;
+import '../styles/FiltersTab.css';
+
+const FiltersTab = () => {
+    const { filters } = useSelector(state => state.filter);
+    return (
+        <section className='filter-tab'>
+            {Object.entries(filters).map(([key, value], index) =>
+                <Filter key={index} tag={key} />
+            )}
+        </section>
+    )
+}
+
+export default FiltersTab;
