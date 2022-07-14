@@ -13,7 +13,7 @@ const SearchBar = () => {
 
     const getMostOccuring = useCallback((givenCoincidences) => {
         const 
-            noOfSearchTerms = search.split(' ').length,
+            noOfSearchTerms = search.trim().split(' ').length,
             mostOccuring = givenCoincidences.filter(coincidence => coincidence.count >= noOfSearchTerms),
             results = mostOccuring.map(({count, ...otherAttrs}) => otherAttrs);
             return results;
@@ -56,6 +56,8 @@ const SearchBar = () => {
         if (search.trim()) {
             dispatch(updateSearch(search.trim().toLowerCase().split(' ')));
             filterCharacters(search);
+        } else {
+            dispatch(updateSearch([]));
         }
     }, [search, dispatch, filterCharacters]);
 

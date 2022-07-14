@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCharacters, updateCharacters } from '../redux/reducers/characters';
-import { updateSearchResults } from '../redux/reducers/search';
 
 import { useQuery } from '@apollo/client';
 import GET_CHARACTERS from '../queries/getCharacters';
@@ -16,8 +15,8 @@ const Table = () => {
     const [groupedData, setGroupedData] = useState([]);
 
     const filteredCharacters  = useSelector(state => state.characters.results);
-    const { allCharacters } = useSelector(state => state.characters);
-    const { searchResults } = useSelector(state => state.search);
+    const { allCharacters }  = useSelector(state => state.characters);
+    const { searchResults, searchTerms } = useSelector(state => state.search);
 
     const dispatch = useDispatch();
 
@@ -51,19 +50,21 @@ const Table = () => {
     }, [filteredCharacters]);
 
     useEffect(() => {
-        
         setGroupedData((groupDataByDate(filteredCharacters)));
-        
     }, [filteredCharacters, groupDataByDate]);
 
     useEffect(() => {
-        if (searchResults.length > 0) {
+        if (searchTerms.length > 0 && searchResults.length > 0) {
             const uniqueResults = getUniqueValues(searchResults);
             dispatch(updateCharacters(uniqueResults));
         } else {
             dispatch(updateCharacters([]));
         }
-    }, [dispatch, searchResults]);
+        if (searchTerms.length === 0) {
+            dispatch(updateCharacters(allCharacters));
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, searchResults, searchTerms]);
 
     return (
         <table>
