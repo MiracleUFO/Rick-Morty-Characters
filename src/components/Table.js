@@ -72,7 +72,7 @@ const Table = () => {
 
     return (
         <>
-        {results?.length > 0 ?
+        {filteredCharacters?.length > 0 ?
             <table>
                 <thead>
                     <tr>
@@ -87,7 +87,7 @@ const Table = () => {
                 {groupedData?.map((group, index) => <DateGroup key={index} date={group.date} characters={group.characters} />)}
             </table>
         :
-            <Message loading={loading} error={error} data={results} />
+            <Message loading={loading} error={error} data={filteredCharacters} />
         }
         </>
     );

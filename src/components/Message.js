@@ -14,7 +14,7 @@ const Message = ({ loading, error, data }) => (
         :
             null
         }
-        {data?.length === 0 ?
+        {data?.length === 0 && !error?.message && !loading ?
             <div className='warning'><AiOutlineWarning /><p>No data found.</p></div>
         :
             null
