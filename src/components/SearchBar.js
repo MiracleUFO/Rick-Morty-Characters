@@ -11,6 +11,7 @@ const SearchBar = () => {
     const { allCharacters }  = useSelector(state => state.characters);
     const dispatch = useDispatch();
 
+    // Sorts search results to include only the characters that contain all search terms
     const getMostOccuring = useCallback((givenCoincidences) => {
         const 
             noOfSearchTerms = search.trim().split(' ').length,
@@ -19,6 +20,7 @@ const SearchBar = () => {
             return results;
     }, [search]);
 
+    // Searches characters using their string properties (name, gender, status, location)
     const filterCharacters = useCallback(() => {
         if (search.trim()) {
             const terms = search.trim().toLowerCase().split(' '), charactersCounts = [], newFilteredCharacters = [...allCharacters];
