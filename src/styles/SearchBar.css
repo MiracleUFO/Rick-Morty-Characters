@@ -1,0 +1,16 @@
+input {
+    width: 80vw;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 50px 20px;
+    border: 1px solid #d9dadd;
+}
+
+input:focus {
+    outline-color: lightblue;
+}
+
+input::placeholder {
+    font-size: 1.2em;
+    padding-left: 20px;
+}
