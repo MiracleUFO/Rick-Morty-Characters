@@ -8,9 +8,9 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 22.5vw;
+    width: 25vw;
     min-width: max-content;
-    padding: 8px 1vw;
+    padding: 10px 1vw;
     border-radius: 5px;
     border: 1px outset aliceblue;
     transition: all 0.2s ease;

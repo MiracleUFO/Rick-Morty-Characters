@@ -2,7 +2,7 @@
     position: relative;
     width: 85vw;
     margin: 0 auto;
-    overflow-x: auto;
+    overflow-x: scroll;
 }
 
 table {
