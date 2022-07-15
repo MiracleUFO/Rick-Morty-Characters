@@ -30,15 +30,13 @@ const SearchBar = () => {
                     { id, name, gender, status, location, created, image } = character, 
                     newCharacter = { id, name, gender, status, location, created, image },
                     coincidence = {...newCharacter};
-
-                for (const [k, v] of Object.entries(newCharacter)) {
-                    terms.map(term => {
+                for (const v of Object.values(newCharacter)) {
+                    terms.forEach(term => {
                         const value = typeof v === 'string' ? v.toLowerCase() : v.name.toLowerCase();
 
                         if (value.startsWith(term) || value.startsWith(term)) {
                             coincidence.count = coincidence.count ? coincidence.count + 1 : 1;
                         }
-                        return k;
                     });
                 }
 

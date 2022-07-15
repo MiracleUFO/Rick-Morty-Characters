@@ -5,7 +5,8 @@ import { setCharacters, updateCharacters } from '../redux/reducers/characters';
 import { useQuery } from '@apollo/client';
 import GET_CHARACTERS from '../queries/getCharacters';
 
-import { getUniqueValues } from '../helpers/getUniqueValues';
+import { intersect } from '../helpers/getUniqueValues';
+import { isAllNestedEmpty } from '../helpers/isAllEmpty';
 
 import DateGroup from './DateGroup';
 import Message from './Message';
@@ -18,6 +19,7 @@ const Table = () => {
     const filteredCharacters  = useSelector(state => state.characters.results);
     const { allCharacters }  = useSelector(state => state.characters);
     const { searchResults, searchTerms } = useSelector(state => state.search);
+    const { filterResults, filters } = useSelector(state => state.filter);
 
     const dispatch = useDispatch();
 
@@ -50,25 +52,28 @@ const Table = () => {
         return groupArrays;
     }, [filteredCharacters]);
 
+    // Groups characters by date for display
     useEffect(() => {
         setGroupedData((groupDataByDate(filteredCharacters)));
     }, [filteredCharacters, groupDataByDate]);
 
+    // Combines search and filter results
     useEffect(() => {
-        if (
-            searchTerms.length > 0 &&
-            searchResults.length > 0
-        ) {
-            const uniqueResults = getUniqueValues(searchResults);
-            dispatch(updateCharacters(uniqueResults));
-        } else {
-            dispatch(updateCharacters([]));
+        const uniqueResults = intersect(filterResults, searchResults);
+        dispatch(updateCharacters(uniqueResults));
+    }, [dispatch, filterResults, searchResults]);
+
+    // Controls results to be displayed depending on search terms and filters having a value
+    useEffect(() => {
+        const isEmpty = isAllNestedEmpty(filters);
+        if (searchTerms.length === 0 && isEmpty) {
+            dispatch(updateCharacters(allCharacters))
+        } else if (searchTerms.length === 0) {
+            dispatch(updateCharacters(filterResults))
+        } else if (isEmpty) {
+            dispatch(updateCharacters(searchResults))
         }
-        if (searchTerms.length === 0) {
-            dispatch(updateCharacters(allCharacters));
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, searchResults, searchTerms]);
+    }, [dispatch, searchTerms, filters, allCharacters, filterResults, searchResults]);
 
     return (
         <div className='table-container'>
