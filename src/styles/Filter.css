@@ -13,6 +13,7 @@
     padding: 8px 1vw;
     border-radius: 5px;
     border: 1px outset aliceblue;
+    transition: all 0.2s ease;
 }
 
 @media screen and (min-width: 800px) {

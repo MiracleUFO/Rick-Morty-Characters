@@ -5,6 +5,7 @@ import { updateFilters, updateFilterResults } from '../redux/reducers/filters';
 
 import { isAllEmpty } from '../helpers/isAllEmpty';
 import { initialCaps } from '../helpers/initialCaps';
+import { isInTimeFrame } from '../helpers/isInTimeFrame';
 import { FiFilter } from 'react-icons/fi';
 
 import '../styles/Filter.css';
@@ -15,7 +16,7 @@ const Filter = ({ tag, values }) => {
     const { allCharacters }  = useSelector(state => state.characters);
         
     let count = 0;
-    Object.entries(values).forEach(([key, value]) => {
+    Object.values(values).forEach((value) => {
         if (value) {
             count = count ? count + 1 : 1;
         }
@@ -23,17 +24,15 @@ const Filter = ({ tag, values }) => {
 
     const filter = useCallback(() => {
         const newFilteredCharacters = [];
-        
         allCharacters.forEach(character => {
             const   
                 { id, name, gender, status, location, created, image } = character, 
                 newCharacter = { id, name, gender, status, location, created, image };
+
                 for (const [k, v] of Object.entries(filters[tag])) {
                     if (v) {
-                        if (tag !== 'created') {
-                            if (newCharacter[tag].toLowerCase() === k) {
-                                newFilteredCharacters.push(newCharacter);
-                            }
+                        if (newCharacter[tag].toLowerCase() === k || isInTimeFrame(k, newCharacter.created)) {
+                            newFilteredCharacters.push(newCharacter);
                         }
                     }
                 }
@@ -45,13 +44,13 @@ const Filter = ({ tag, values }) => {
         const newFilters = JSON.parse(JSON.stringify(filters));
         newFilters[tag][e.target.value] = e.target.checked;
         dispatch(updateFilters(newFilters));
-    }
+    };
 
     useEffect(() => {
         if (!isAllEmpty(filters[tag])) {
             filter();
         }
-    }, [filters, filter, tag])
+    }, [filters, filter, tag]);
 
     return (
         <div className='filters-container'>
