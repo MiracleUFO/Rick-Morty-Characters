@@ -21,11 +21,11 @@ const SearchBar = () => {
     }, [search]);
 
     // Searches characters using their string properties (name, gender, status, and location)
-    const filterCharacters = useCallback(() => {
-        if (search.trim()) {
-            const terms = search.trim().toLowerCase().split(' '), charactersCounts = [], newFilteredCharacters = [...allCharacters];
+    const filterCharacters = useCallback((trimmedSearch) => {
+        if (trimmedSearch) {
+            const terms = trimmedSearch.toLowerCase().split(' '), charactersCounts = [];
 
-            newFilteredCharacters.map(character => {
+            allCharacters.forEach(character => {
                 const   
                     { id, name, gender, status, location, created, image } = character, 
                     newCharacter = { id, name, gender, status, location, created, image },
@@ -36,7 +36,7 @@ const SearchBar = () => {
                         if (k !== 'image') {
                             const value = typeof v === 'string' ? v.toLowerCase() : v.name.toLowerCase();
                             const valueArray = value.split(' ');
-                            if (value.startsWith(term) || value.startsWith(term) || valueArray.includes(search.trim().toLowerCase())) {
+                            if (value.startsWith(term) || value.startsWith(term) || valueArray.includes(trimmedSearch)) {
                                 coincidence.count = coincidence.count ? coincidence.count + 1 : 1;
                             }
                         }
@@ -47,19 +47,20 @@ const SearchBar = () => {
                     charactersCounts.push(coincidence);
                 }
 
-                const newArray = getMostOccuring(charactersCounts);
-                dispatch(updateSearchResults(newArray));
-                return character;
+                const arrayOfMostOccurances = getMostOccuring(charactersCounts);
+                dispatch(updateSearchResults(arrayOfMostOccurances));
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, getMostOccuring, search]);
 
-    // Sets searchTerms array in store
+    // Sets searchTerms array in store and calls filter func
     useEffect(() => {
-        if (search.trim()) {
-            dispatch(updateSearch(search.trim().toLowerCase().split(' ')));
-            filterCharacters(search);
+        const trimmedSearch = search.trim().toLowerCase();
+
+        if (trimmedSearch) {
+            dispatch(updateSearch(trimmedSearch.split(' ')));
+            filterCharacters(trimmedSearch);
         } else {
             dispatch(updateSearch([]));
         }

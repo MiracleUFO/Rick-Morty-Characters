@@ -61,7 +61,7 @@ const Filter = ({ tag, values }) => {
             </div>
 
             <div className='checkboxes-card'>
-                {Object.entries(values).map(([key, value], index) =>
+                {Object.keys(values).map((key, index) =>
                     <div key={index} className='checkbox-container'>
                         <input
                             className='checkbox'
