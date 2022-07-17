@@ -63,6 +63,25 @@ td img {
     }
 }
 
+@media screen and (max-width: 800px) {
+    ::-webkit-scrollbar {
+        width: 100vw;
+        height: 20px;   
+    }
+      
+    ::-webkit-scrollbar-thumb {
+        background-color: black;        
+    }
+      
+    ::-webkit-scrollbar-track-piece:end {
+        margin-right: 50px; 
+    }
+      
+    ::-webkit-scrollbar-track-piece:start {
+        margin-left: 50px;
+    }
+}
+
 tbody {
     border-bottom: 3px solid aliceblue;
 }
