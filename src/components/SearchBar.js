@@ -20,7 +20,7 @@ const SearchBar = () => {
             return results;
     }, [search]);
 
-    // Searches characters using their string properties (name, gender, status, location)
+    // Searches characters using their string properties (name, gender, status, and location)
     const filterCharacters = useCallback(() => {
         if (search.trim()) {
             const terms = search.trim().toLowerCase().split(' '), charactersCounts = [], newFilteredCharacters = [...allCharacters];
@@ -30,12 +30,15 @@ const SearchBar = () => {
                     { id, name, gender, status, location, created, image } = character, 
                     newCharacter = { id, name, gender, status, location, created, image },
                     coincidence = {...newCharacter};
-                for (const v of Object.values(newCharacter)) {
-                    terms.forEach(term => {
-                        const value = typeof v === 'string' ? v.toLowerCase() : v.name.toLowerCase();
 
-                        if (value.startsWith(term) || value.startsWith(term)) {
-                            coincidence.count = coincidence.count ? coincidence.count + 1 : 1;
+                for (const [k, v] of Object.entries(newCharacter)) {
+                    terms.forEach(term => {
+                        if (k !== 'image') {
+                            const value = typeof v === 'string' ? v.toLowerCase() : v.name.toLowerCase();
+                            const valueArray = value.split(' ');
+                            if (value.startsWith(term) || value.startsWith(term) || valueArray.includes(search.trim().toLowerCase())) {
+                                coincidence.count = coincidence.count ? coincidence.count + 1 : 1;
+                            }
                         }
                     });
                 }
