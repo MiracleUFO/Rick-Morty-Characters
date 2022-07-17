@@ -32,17 +32,14 @@ table tr:nth-of-type(even) {
    border: 1px solid aliceblue;
 }
 
+td {
+    min-width: 20vw;
+}
+
 td img {
     width: 70px;
     max-width: 60%;
     border-radius: 50%;
-}
-
-@media screen and (min-width: 800px) {
-    td img {
-        width: 120px;
-        max-width: 30%;
-    }
 }
 
 .group-title {
@@ -58,27 +55,15 @@ td img {
 }
 
 @media screen and (min-width: 800px) {
+    td,
     .group-title {
         width: revert;
+        min-width: revert;
     }
-}
 
-@media screen and (max-width: 800px) {
-    ::-webkit-scrollbar {
-        width: 100vw;
-        height: 20px;   
-    }
-      
-    ::-webkit-scrollbar-thumb {
-        background-color: black;        
-    }
-      
-    ::-webkit-scrollbar-track-piece:end {
-        margin-right: 50px; 
-    }
-      
-    ::-webkit-scrollbar-track-piece:start {
-        margin-left: 50px;
+    td img {
+        width: 120px;
+        max-width: 30%;
     }
 }
 
