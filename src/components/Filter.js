@@ -14,13 +14,13 @@ const Filter = ({ tag, values }) => {
     const dispatch = useDispatch();
     const { filters } = useSelector(state => state.filter);
     const { allCharacters }  = useSelector(state => state.characters);
-        
     let count = 0;
+
     Object.values(values).forEach((value) => {
         if (value) {
             count = count ? count + 1 : 1;
         }
-    });
+    });    
 
     const filter = useCallback(() => {
         const newFilteredCharacters = [];
@@ -65,13 +65,13 @@ const Filter = ({ tag, values }) => {
                     <div key={index} className='checkbox-container'>
                         <input
                             className='checkbox'
-                            id={`checkbox-${index}`}
+                            id={`checkbox-${key}-${index}`}
                             type='checkbox'
                             value={key}
                             checked={filters[tag][key]}
                             onChange={handleChange}
                         />
-                        <label htmlFor={`checkbox-${index}`}>
+                        <label htmlFor={`checkbox-${key}-${index}`}>
                             {initialCaps(key)}
                         </label>
                     </div>

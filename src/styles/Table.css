@@ -1,8 +1,33 @@
 .table-container {
     position: relative;
     width: 85vw;
+    height: 70vh;
     margin: 0 auto;
-    overflow-x: scroll;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+}
+
+.table-container::-webkit-scrollbar {
+    -webkit-appearance: none;
+    height: 15px;
+}
+
+.table-container::-webkit-scrollbar-thumb:horizontal {
+    width: 100vw;
+    border-radius: 8px;
+    border: 3px solid white;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+  
+.table-container::-webkit-scrollbar-track-piece:end {
+    margin-right: 7.5vw;
+}
+  
+.table-container::-webkit-scrollbar-track-piece:start {
+    margin-left: 7.5vw;
 }
 
 table {
@@ -10,8 +35,7 @@ table {
     margin: 40px auto;
     color: #5a5a5a;
     border-collapse: collapse;
-    overflow-x: scroll;
-    scroll-behavior: smooth;
+    overflow: auto;
     white-space: nowrap;
 }
 
@@ -55,6 +79,10 @@ td img {
 }
 
 @media screen and (min-width: 800px) {
+    .table-container {
+        height: max-content;
+    }
+
     td,
     .group-title {
         width: revert;
