@@ -1,13 +1,11 @@
 .table-container {
     position: relative;
     width: 85vw;
-    height: 70vh;
+    height: 62vh;
     margin: 0 auto;
     overflow: scroll;
     scroll-behavior: smooth;
     transition: all 0.2s ease;
-    display: flex;
-    justify-content: center;
 }
 
 .table-container::-webkit-scrollbar {

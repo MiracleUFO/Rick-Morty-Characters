@@ -1,5 +1,6 @@
 .loading, .error, .warning {
-    margin-top: 40px;
+    width: 85vw;
+    margin: 40px auto 0;
 }
 
 .loading {
