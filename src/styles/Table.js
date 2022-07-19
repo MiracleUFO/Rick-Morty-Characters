@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const TableContainer = styled.div`
     position: relative;
     width: 85vw;
-    height: 52vh;
+    height: 47vh;
     margin: 0 auto;
     overflow: scroll;
     transition: var(--default-transition);
@@ -90,7 +90,7 @@ const TableHead = styled.thead`
     }
 `;
 
-const GroupTitle = styled.div`
+const GroupTitle = styled.td`
     display: flex;
     align-items: center;
     justify-content: center;

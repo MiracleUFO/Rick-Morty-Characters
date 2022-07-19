@@ -13,9 +13,13 @@ const CheckboxContainer = styled.div`
     padding-bottom: 20px;
     color: var(--light-grey);
     & label {
-        padding-left: 10%;
         &:hover {
             color: var(--dark-grey);
+        }
+    }
+    @media (min-width: 800px) {
+        & label {
+            padding-left: 10%;
         }
     }
 `;
