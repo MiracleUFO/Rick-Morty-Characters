@@ -77,6 +77,7 @@ const Filter = ({ tag, values }) => {
                             checked={filters[tag][key]}
                             onChange={handleChange}
                         />
+                        
                         <label htmlFor={`checkbox-${key}-${index}`}>
                             {initialCaps(key)}
                         </label>

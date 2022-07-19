@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { updateSearch, updateSearchResults } from '../redux/reducers/search';
 
-import '../styles/SearchBar.css';
+import Input from '../styles/SearchBar';
 
 const SearchBar = () => {
     const [search, setSearch] = useState('');
@@ -12,11 +12,12 @@ const SearchBar = () => {
     const dispatch = useDispatch();
 
     // Sorts search results to include only the characters that contain all search terms
-    const getMostOccuring = useCallback((givenCoincidences) => {
+    const getMostOccuringCharacters = useCallback((givenCoincidences) => {
         const 
             noOfSearchTerms = search.trim().split(' ').length,
             mostOccuring = givenCoincidences.filter(coincidence => coincidence.count >= noOfSearchTerms),
             results = mostOccuring.map(({count, ...otherAttrs}) => otherAttrs);
+
             return results;
     }, [search]);
 
@@ -36,8 +37,13 @@ const SearchBar = () => {
                         if (k !== 'image') {
                             const value = typeof v === 'string' ? v.toLowerCase() : v.name.toLowerCase();
                             const valueArray = value.split(' ');
-                            if (value.startsWith(term) || value.startsWith(term) || valueArray.includes(trimmedSearch)) {
-                                coincidence.count = coincidence.count ? coincidence.count + 1 : 1;
+                            
+                            if (value.includes(term)) {
+                                valueArray.forEach(val => {
+                                    if (val.startsWith(term)) {
+                                        coincidence.count = coincidence.count ? coincidence.count + 1 : 1;
+                                    }
+                                });
                             }
                         }
                     });
@@ -47,14 +53,12 @@ const SearchBar = () => {
                     charactersCounts.push(coincidence);
                 }
 
-                const arrayOfMostOccurances = getMostOccuring(charactersCounts);
-                dispatch(updateSearchResults(arrayOfMostOccurances));
+                dispatch(updateSearchResults(getMostOccuringCharacters(charactersCounts)));
             });
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, getMostOccuring, search]);
+    }, [allCharacters, dispatch, getMostOccuringCharacters]);
 
-    // Sets searchTerms array in store and calls filter func
+    // Sets searchTerms array in store and calls filter func when user inputs search term
     useEffect(() => {
         const trimmedSearch = search.trim().toLowerCase();
 
@@ -67,7 +71,7 @@ const SearchBar = () => {
     }, [search, dispatch, filterCharacters]);
 
     return (
-        <input 
+        <Input 
             value={search}
             onChange={(e) => setSearch(e.target.value)} 
             placeholder="Search characters..." 

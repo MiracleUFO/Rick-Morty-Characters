@@ -64,7 +64,6 @@ const TagCard = styled.div`
     border-radius: 5px;
     border: 1px outset aliceblue;
     transition: all 0.2s ease;
-
     @media (min-width: 800px) {
         width: 9vw;
     }    
@@ -77,11 +76,24 @@ const FiltersContainer = styled.div`
     }
 `;
 
+const Tab = styled.section`
+    display: flex;
+    justify-content: space-between;
+    width: 90vw;
+    margin: 0 auto;
+    border-radius: 10px;
+    height: 80px;
+    @media (min-width: 800px) {
+        justify-content: space-around;
+    }
+`;
+
 export {
+    Tab,
     FiltersContainer,
     TagCard,
     Count,
     CheckboxesCard,
     CheckboxContainer,
     Checkbox
-}
+};
