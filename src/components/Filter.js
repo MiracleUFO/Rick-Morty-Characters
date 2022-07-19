@@ -8,7 +8,14 @@ import { initialCaps } from '../helpers/initialCaps';
 import { isInTimeFrame } from '../helpers/isInTimeFrame';
 import { FiFilter } from 'react-icons/fi';
 
-import '../styles/Filter.css';
+import {
+    FiltersContainer,
+    TagCard,
+    Count,
+    CheckboxesCard,
+    CheckboxContainer,
+    Checkbox
+} from '../styles/Filter';
 
 const Filter = ({ tag, values }) => {
     const dispatch = useDispatch();
@@ -53,18 +60,17 @@ const Filter = ({ tag, values }) => {
     }, [filters, filter, tag]);
 
     return (
-        <div className='filters-container'>
-            <div className='tag-card'>
+        <FiltersContainer>
+            <TagCard>
                 <FiFilter />
                 {initialCaps(tag)}
-                {count ? <div className='count'>{count}</div> : null}
-            </div>
+                {count ? <Count>{count}</Count> : null}
+            </TagCard>
 
-            <div className='checkboxes-card'>
+            <CheckboxesCard>
                 {Object.keys(values).map((key, index) =>
-                    <div key={index} className='checkbox-container'>
-                        <input
-                            className='checkbox'
+                    <CheckboxContainer key={index}>
+                        <Checkbox
                             id={`checkbox-${key}-${index}`}
                             type='checkbox'
                             value={key}
@@ -74,10 +80,10 @@ const Filter = ({ tag, values }) => {
                         <label htmlFor={`checkbox-${key}-${index}`}>
                             {initialCaps(key)}
                         </label>
-                    </div>
+                    </CheckboxContainer>
                 )}
-            </div>
-        </div>
+            </CheckboxesCard>
+        </FiltersContainer>
     );
 };
 

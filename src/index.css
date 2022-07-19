@@ -8,8 +8,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:root {
+  --chrome-blue: #4c8bf5;
+  --light-grey: #7d7e7e;
+  --darker-grey: #5a5a5a;
 }
