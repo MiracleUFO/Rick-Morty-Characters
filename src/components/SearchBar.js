@@ -74,7 +74,7 @@ const SearchBar = () => {
         <Input 
             value={search}
             onChange={(e) => setSearch(e.target.value)} 
-            placeholder="Search characters..." 
+            placeholder='Search characters...'
         />
     );
 };

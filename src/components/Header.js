@@ -1,11 +1,11 @@
 import Rick from '../assets/images/rick.png';
-import '../styles/Header.css';
+import { HeaderContainer, HeaderImg } from '../styles/Header';
 
 const Header = () => (
-    <header>
-        <img src={Rick} alt='Rick grimacing' />
+    <HeaderContainer>
+        <HeaderImg src={Rick} alt='Rick grimacing' />
         <p>Rick &amp; Morty.</p>
-    </header>
+    </HeaderContainer>
 )
 
 export default Header;

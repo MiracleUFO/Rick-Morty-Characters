@@ -1,4 +1,6 @@
-header {
+import styled from 'styled-components';
+
+const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
     height: max-content;
@@ -7,15 +9,15 @@ header {
     margin: 0 2.5vw;
     padding: 20px 0;
     border-bottom: 2px solid #f9fafe;
-}
+`;
 
-header img {
+const HeaderImg = styled.img`
     width: 10%;
     padding-right: 10px;
-}
 
-@media screen and (min-width: 800px) {
-    header img {
+    @media (min-width: 800px) {
         width: 5%;
     }
-}
+`;
+
+export { HeaderContainer, HeaderImg };
