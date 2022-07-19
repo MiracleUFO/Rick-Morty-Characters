@@ -6,6 +6,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
 :root {
   --chrome-blue: #4c8bf5;
   --light-grey: #7d7e7e;

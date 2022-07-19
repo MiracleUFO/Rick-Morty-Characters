@@ -11,7 +11,13 @@ import { isAllNestedEmpty } from '../helpers/isAllEmpty';
 import DateGroup from './DateGroup';
 import Message from './Message';
 
-import '../styles/Table.css';
+// import '../styles/Table.css';
+
+import {
+    TableContainer,
+    TableContent,
+    TableHead,
+} from '../styles/Table';
 
 const Table = () => {
     const [groupedData, setGroupedData] = useState([]);
@@ -76,25 +82,36 @@ const Table = () => {
     }, [dispatch, searchTerms, filters, allCharacters, filterResults, searchResults]);
 
     return (
-        <div className='table-container'>
-        {filteredCharacters?.length > 0 ?
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Avatar</th>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Status</th>
-                        <th>Location</th>
-                    </tr>
-                </thead>
-                {groupedData?.map((group, index) => <DateGroup key={index} date={group.date} characters={group.characters} />)}
-            </table>
-        :
-            <Message loading={loading} error={error} data={filteredCharacters} />
-        }
-        </div>
+        <TableContainer>
+            {filteredCharacters?.length > 0 ?
+                <TableContent>
+                    <TableHead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Avatar</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                        </tr>
+                    </TableHead>
+
+                    {groupedData?.map((group, index) => 
+                        <DateGroup 
+                            key={index}
+                            date={group.date} 
+                            characters={group.characters}
+                        />
+                    )}
+                </TableContent>
+            :
+                <Message 
+                    loading={loading}
+                    error={error}
+                    data={filteredCharacters}
+                />
+            }
+        </TableContainer>
     );
 };
 

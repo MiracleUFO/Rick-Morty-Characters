@@ -1,12 +1,14 @@
 import moment from 'moment';
 
+import { GroupTitle } from '../styles/Table';
+
 const DateGroup = ({ date, characters }) => {
     return (
             <tbody>
                 <tr>
-                    <td className='group-title'>
+                    <GroupTitle>
                         {moment(date).format('dddd, MMMM Do YYYY')}
-                    </td>
+                    </GroupTitle>
                 </tr>
                 {characters?.map((character, index) => (
                     <tr key={index}>

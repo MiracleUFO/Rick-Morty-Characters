@@ -35,7 +35,7 @@ const CheckboxesCard = styled.div`
     top: 55%;
     right: -20px;
     box-shadow: 3px 5px 2px 0.5px rgba(0, 0, 0, 3%);
-    transition: all 0.2s ease;
+    transition: var(--default-transition);
 `;
 
 const Count = styled.div`
@@ -63,7 +63,8 @@ const TagCard = styled.div`
     padding: 10px 1vw;
     border-radius: 5px;
     border: 1px outset aliceblue;
-    transition: all 0.2s ease;
+    transition: var(--default-transition);
+
     @media (min-width: 800px) {
         width: 9vw;
     }    
@@ -83,6 +84,7 @@ const Tab = styled.section`
     margin: 0 auto;
     border-radius: 10px;
     height: 80px;
+    
     @media (min-width: 800px) {
         justify-content: space-around;
     }
