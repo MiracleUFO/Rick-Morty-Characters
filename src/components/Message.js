@@ -1,21 +1,21 @@
 import { AiOutlineWarning, AiOutlineLoading3Quarters } from 'react-icons/ai';
 
-import '../styles/Message.css';
+import { Loading, Error, Warning } from '../styles/Message';
 
 const Message = ({ loading, error, data }) => (
     <>
         {loading ?
-            <div className='loading'><AiOutlineLoading3Quarters /><p>Loading...</p></div>
+            <Loading><AiOutlineLoading3Quarters /><p>Loading...</p></Loading>
         :
             null
         }
         {error?.message ?
-            <div className='error'><AiOutlineWarning /><p>{error?.message}. Try Again.</p></div>
+            <Error><AiOutlineWarning /><p>{error?.message}. Try Again.</p></Error>
         :
             null
         }
         {data?.length === 0 && !error?.message && !loading ?
-            <div className='warning'><AiOutlineWarning /><p>No data found.</p></div>
+            <Warning><AiOutlineWarning /><p>No data found.</p></Warning>
         :
             null
         }
