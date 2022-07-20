@@ -6,9 +6,13 @@ const HeaderContainer = styled.header`
     height: max-content;
     font-weight: bolder;
     font-size: 1.2em;
-    margin: 0 2.5vw;
-    padding: 20px 0;
+    padding: 20px 2.5vw;
     border-bottom: 2px solid #f9fafe;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: white;
+    width: 95vw;
 `;
 
 const HeaderImg = styled.img`

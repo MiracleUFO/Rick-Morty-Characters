@@ -14,7 +14,7 @@ const CheckboxContainer = styled.div`
     color: var(--light-grey);
     & label {
         &:hover {
-            color: var(--dark-grey);
+            color: var(--darker-grey);
         }
     }
     @media (min-width: 800px) {

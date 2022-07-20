@@ -71,7 +71,8 @@ const SearchBar = () => {
     }, [search, dispatch, filterCharacters]);
 
     return (
-        <Input 
+        <Input
+            id='search'
             value={search}
             onChange={(e) => setSearch(e.target.value)} 
             placeholder='Search characters...'

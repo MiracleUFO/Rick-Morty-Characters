@@ -99,7 +99,7 @@ const GroupTitle = styled.td`
     background-color: aliceblue !important;
     border: 2px solid lightblue;
     width: 20vw;
-    min-width: fit-content;
+    min-width: max-content !important;
 
     @media (min-width: 800px) {
         width: revert;

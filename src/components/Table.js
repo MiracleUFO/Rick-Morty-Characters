@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCharacters, updateCharacters } from '../redux/reducers/characters';
+import { setPages } from '../redux/reducers/pages';
 
 import { useQuery } from '@apollo/client';
 import GET_CHARACTERS from '../queries/getCharacters';
@@ -10,8 +11,7 @@ import { isAllNestedEmpty } from '../helpers/isAllEmpty';
 
 import DateGroup from './DateGroup';
 import Message from './Message';
-
-// import '../styles/Table.css';
+import Pagination from './Pagination';
 
 import {
     TableContainer,
@@ -26,11 +26,22 @@ const Table = () => {
     const { allCharacters }  = useSelector(state => state.characters);
     const { searchResults, searchTerms } = useSelector(state => state.search);
     const { filterResults, filters } = useSelector(state => state.filter);
+    const { noOfPages, currentPage } = useSelector(state => state.pages);
 
     const dispatch = useDispatch();
 
-    const { data, loading, error } = useQuery(GET_CHARACTERS);
+    const { data, loading, error } = useQuery(GET_CHARACTERS, {
+        variables: {
+            page: currentPage
+        }
+    });
+
     const results  = data?.characters.results;
+    const pages = data?.characters?.info?.pages;
+
+    useEffect(() => {
+        dispatch(setPages(pages));
+    }, [dispatch, pages])
 
     useEffect(() => {
         if (results?.length > 0) {
@@ -82,36 +93,39 @@ const Table = () => {
     }, [dispatch, searchTerms, filters, allCharacters, filterResults, searchResults]);
 
     return (
-        <TableContainer>
-            {filteredCharacters?.length > 0 ?
-                <TableContent>
-                    <TableHead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Avatar</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Status</th>
-                            <th>Location</th>
-                        </tr>
-                    </TableHead>
+        <>
+            <TableContainer>
+                {filteredCharacters?.length > 0 ?
+                    <TableContent>
+                        <TableHead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Avatar</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>Status</th>
+                                <th>Location</th>
+                            </tr>
+                        </TableHead>
 
-                    {groupedData?.map((group, index) => 
-                        <DateGroup 
-                            key={index}
-                            date={group.date} 
-                            characters={group.characters}
-                        />
-                    )}
-                </TableContent>
-            :
-                <Message 
-                    loading={loading}
-                    error={error}
-                    data={filteredCharacters}
-                />
-            }
-        </TableContainer>
+                        {groupedData?.map((group, index) => 
+                            <DateGroup 
+                                key={index}
+                                date={group.date} 
+                                characters={group.characters}
+                            />
+                        )}
+                    </TableContent>
+                :
+                    <Message 
+                        loading={loading}
+                        error={error}
+                        data={filteredCharacters}
+                    />
+                }
+            </TableContainer>
+            <Pagination pages={noOfPages} currentPage={currentPage} />
+        </>
     );
 };
 
