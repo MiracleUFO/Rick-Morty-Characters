@@ -21,7 +21,6 @@ const Pagination = ({ pages, currentPage }) => {
     // Shows needed batch of 5 page numbers when arrowbuttons are clicked
     useEffect(() => {
         const start = currentDisplayedBatch === 1 ? 0 : 5 * (currentDisplayedBatch - 1);
-
         setCurrentDisplayedPages(allPages.slice(start, start + 5));
     }, [allPages, currentDisplayedBatch]);
 
