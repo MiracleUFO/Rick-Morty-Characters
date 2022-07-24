@@ -6,6 +6,8 @@ import { updateFilters, updateFilterResults } from '../redux/reducers/filters';
 import { isAllEmpty } from '../helpers/isAllEmpty';
 import { initialCaps } from '../helpers/initialCaps';
 import { isInTimeFrame } from '../helpers/isInTimeFrame';
+import { combineFilters } from '../helpers/getUniqueValues';
+
 import { FiFilter } from 'react-icons/fi';
 
 import {
@@ -18,46 +20,54 @@ import {
 } from '../styles/Filter';
 
 const Filter = ({ tag, values }) => {
-    const dispatch = useDispatch();
-    const { filters } = useSelector(state => state.filter);
-    const { allCharacters }  = useSelector(state => state.characters);
     let count = 0;
-
     Object.values(values).forEach((value) => {
-        if (value) {
-            count = count ? count + 1 : 1;
-        }
-    });    
+        if (value) count = count ? count + 1 : 1;
+    });
 
-    const filter = useCallback(() => {
-        const newFilteredCharacters = [];
+    const 
+        dispatch = useDispatch(),
+        { filters } = useSelector(state => state.filter),
+        { allCharacters }  = useSelector(state => state.characters);
+
+    const filter = useCallback((filters) => {
+        const sameFilterResults = [], differentFilterResults = [];
+
         allCharacters.forEach(character => {
-            const   
-                { id, name, gender, status, location, created, image } = character, 
+            const
+                { id, name, gender, status, location, created, image } = character,
                 newCharacter = { id, name, gender, status, location, created, image };
 
-                for (const [k, v] of Object.entries(filters[tag])) {
+            Object.entries(filters).forEach(filter => {
+                const newTag = filter[0];
+                for (const [k, v] of Object.entries(filter[1])) {
                     if (v) {
-                        if (newCharacter[tag].toLowerCase() === k || isInTimeFrame(k, newCharacter.created)) {
-                            newFilteredCharacters.push(newCharacter);
+                        if (newTag !== tag) {
+                            if ((newCharacter[newTag].toLowerCase() === k || isInTimeFrame(k, newCharacter.created))) {
+                                differentFilterResults.push(newCharacter);
+                            }  
+                        } if (newCharacter[tag].toLowerCase() === k || isInTimeFrame(k, newCharacter.created)) {
+                            sameFilterResults.push(newCharacter);
                         }
                     }
                 }
-                dispatch(updateFilterResults(newFilteredCharacters));
+            });
         });
-    }, [allCharacters, dispatch, filters, tag]);
+
+        dispatch(updateFilterResults(combineFilters(sameFilterResults, differentFilterResults)));
+    }, [allCharacters, dispatch, tag]);
+
+    useEffect(() => {
+        if (!isAllEmpty(filters[tag])) {
+            filter(filters);
+        }
+    }, [filters, filter, tag]);
 
     const handleChange = (e) => {
         const newFilters = JSON.parse(JSON.stringify(filters));
         newFilters[tag][e.target.value] = e.target.checked;
         dispatch(updateFilters(newFilters));
     };
-
-    useEffect(() => {
-        if (!isAllEmpty(filters[tag])) {
-            filter();
-        }
-    }, [filters, filter, tag]);
 
     return (
         <FiltersContainer>

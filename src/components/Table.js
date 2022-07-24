@@ -6,7 +6,7 @@ import { setPages } from '../redux/reducers/pages';
 import { useQuery } from '@apollo/client';
 import GET_CHARACTERS from '../queries/getCharacters';
 
-import { intersect } from '../helpers/getUniqueValues';
+import { combine } from '../helpers/getUniqueValues';
 import { isAllNestedEmpty } from '../helpers/isAllEmpty';
 
 import DateGroup from './DateGroup';
@@ -76,7 +76,7 @@ const Table = () => {
 
     // Combines search and filter results
     useEffect(() => {
-        const uniqueResults = intersect(filterResults, searchResults);
+        const uniqueResults = combine(filterResults, searchResults);
         dispatch(updateCharacters(uniqueResults));
     }, [dispatch, filterResults, searchResults]);
 

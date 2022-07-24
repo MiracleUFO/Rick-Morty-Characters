@@ -5,11 +5,13 @@ const initialState = {
         gender: {
             male: false,
             female: false,
-            unknown: false
+            unknown: false,
+            genderless: false,
         },
         status: {
             dead: false,
-            alive: false
+            alive: false,
+            unknown: false,
         },
         created: {
             lastYear: false,

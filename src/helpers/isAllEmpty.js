@@ -9,4 +9,4 @@ export const isAllNestedEmpty = (objectOfObjects) => {
         truthy = truthy || !isAllEmpty(v);
     }
     return !truthy;
-}
+};

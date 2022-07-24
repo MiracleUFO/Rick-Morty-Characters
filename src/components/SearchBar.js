@@ -52,9 +52,8 @@ const SearchBar = () => {
                 if (JSON.stringify(coincidence) !== '{}') {
                     charactersCounts.push(coincidence);
                 }
-
-                dispatch(updateSearchResults(getMostOccuringCharacters(charactersCounts)));
             });
+            dispatch(updateSearchResults(getMostOccuringCharacters(charactersCounts)));
         }
     }, [allCharacters, dispatch, getMostOccuringCharacters]);
 

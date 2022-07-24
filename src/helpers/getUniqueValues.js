@@ -4,13 +4,13 @@ export const getUniqueValues = (arr) => {
         .map(item => JSON.parse(item));
 };
 
-export const intersect = (arrA, arrB) => {
+const intersect = (arrA, arrB) => {
     if (arrA.length === 0) {
-        return arrB;
+        return arrA;
     }
 
     if (arrB.length === 0) {
-        return arrA;
+        return arrB;
     }
 
     const intersection = arrA.map(a => {
@@ -22,3 +22,18 @@ export const intersect = (arrA, arrB) => {
 export const combine = (arrA, arrB) => {
     return getUniqueValues(intersect(arrA, arrB));
 };
+
+const intersectFilters = (sameFilterResults, differentFilterResults) => {
+    if (sameFilterResults.length === 0 || differentFilterResults.length === 0) {
+        return sameFilterResults;
+    }
+
+    const intersection = sameFilterResults.map(a => {
+        return differentFilterResults.filter(b => b.id === a.id);
+    });
+    return Array.from(intersection.flat());
+}
+
+export const combineFilters = (sameFilterResults, differentFilterResults) => {
+    return getUniqueValues(intersectFilters(sameFilterResults, differentFilterResults));
+}
