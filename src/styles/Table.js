@@ -8,14 +8,6 @@ const TableContainer = styled.div`
     overflow: scroll;
     transition: var(--default-transition);
 
-    & {
-        animation: ${props => props.data?.length > 0 ? 'fadeIn .4s ease' : 'revert'};
-        @keyframes fadeIn {
-           from {opacity: 0.1}
-           to {opacity: 1}
-        }
-    }
-
     &::-webkit-scrollbar {
         -webkit-appearance: none;
         height: 15px;
@@ -89,6 +81,13 @@ const TableContent = styled.table`
     border-collapse: collapse;
     overflow: auto;
     white-space: nowrap;
+    @keyframes fadeIn {
+        from {opacity: 0.1}
+        to {opacity: 1}
+    }
+    & tr {
+        animation: ${props => props.data?.length > 0 ? 'fadeIn .4s ease' : 'revert'};
+    };   
 `;
 
 const TableHead = styled.thead`
