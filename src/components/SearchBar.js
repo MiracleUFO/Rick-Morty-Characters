@@ -60,10 +60,11 @@ const SearchBar = () => {
     // Sets searchTerms array in store and calls filter func when user inputs search term
     useEffect(() => {
         const trimmedSearch = search.trim().toLowerCase();
-
         if (trimmedSearch) {
-            dispatch(updateSearch(trimmedSearch.split(' ')));
-            filterCharacters(trimmedSearch);
+            setTimeout(() => {
+                dispatch(updateSearch(trimmedSearch.split(' ')));
+                filterCharacters(trimmedSearch);
+            }, 100);
         } else {
             dispatch(updateSearch([]));
         }

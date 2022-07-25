@@ -6,3 +6,5 @@ If you don't find who you're looking for on a page, don't worry (yet) go to anot
 There's a pagination component at the bottom to help you navigate.
 
 Have fun!
+
+Live at https://bit.ly/rick-and-morty-search

@@ -93,9 +93,9 @@ const Table = () => {
     }, [dispatch, searchTerms, filters, allCharacters, filterResults, searchResults]);
 
     return (
-        <>
-            <TableContainer>
-                {filteredCharacters?.length > 0 ?
+        <TableContainer data={filteredCharacters}>
+            {filteredCharacters?.length > 0 ?
+                <>
                     <TableContent>
                         <TableHead>
                             <tr>
@@ -116,16 +116,16 @@ const Table = () => {
                             />
                         )}
                     </TableContent>
-                :
-                    <Message 
-                        loading={loading}
-                        error={error}
-                        data={filteredCharacters}
-                    />
-                }
-            </TableContainer>
-            <Pagination pages={noOfPages} currentPage={currentPage} />
-        </>
+                    <Pagination pages={noOfPages} currentPage={currentPage} />
+                </>
+            :
+                <Message 
+                    loading={loading}
+                    error={error}
+                    data={filteredCharacters}
+                />
+            }
+        </TableContainer>
     );
 };
 

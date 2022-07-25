@@ -1,25 +1,18 @@
-import { AiOutlineWarning, AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { AiOutlineWarning } from 'react-icons/ai';
 
-import { Loading, Error, Warning } from '../styles/Message';
+import loader from '../assets/images/beaker.gif';
 
-const Message = ({ loading, error, data }) => (
-    <>
-        {loading ?
-            <Loading><AiOutlineLoading3Quarters /><p>Loading...</p></Loading>
-        :
-            null
-        }
-        {error?.message ?
-            <Error><AiOutlineWarning /><p>{error?.message}. Try Again.</p></Error>
-        :
-            null
-        }
-        {data?.length === 0 && !error?.message && !loading ?
-            <Warning><AiOutlineWarning /><p>No data found on page. (Try different page?)</p></Warning>
-        :
-            null
-        }
-    </>
-);
+import { Error, Warning } from '../styles/Message';
+import { LoadingImg } from '../styles/Loading';
+
+const Message = ({ loading, error, data }) => {
+    if (error?.message) {
+        return <Error><AiOutlineWarning /><p>{error?.message}. Try Again.</p></Error>;
+    } else if (loading) {
+        return <LoadingImg src={loader} alt='Loader... bubbling beaker' />;
+    } else if (data?.length === 0) {
+        return <Warning><AiOutlineWarning /><p>No data found on page.<br/>(Try different page?)</p></Warning>;
+    }
+};
 
 export default Message;
