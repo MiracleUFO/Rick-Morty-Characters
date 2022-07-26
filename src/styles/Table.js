@@ -1,4 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+    from {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1;
+    }
+`;
 
 const TableContainer = styled.div`
     position: relative;
@@ -51,7 +60,6 @@ const TableContainer = styled.div`
 
     & td {
         min-width: 20vw;
-
         & img {
             width: 70px;
             max-width: 60%;
@@ -62,7 +70,6 @@ const TableContainer = styled.div`
                 width: 120px;
             }
         }
-
         @media (min-width: 800px) {
             width: revert;
             min-width: revert;
@@ -81,13 +88,10 @@ const TableContent = styled.table`
     border-collapse: collapse;
     overflow: auto;
     white-space: nowrap;
-    @keyframes fadeIn {
-        from {opacity: 0.1}
-        to {opacity: 1}
-    }
+
     & tr {
-        animation: ${props => props.data?.length > 0 ? 'fadeIn .4s ease' : 'revert'};
-    };   
+        animation:  ${fadeIn} 0.5s;
+    }  
 `;
 
 const TableHead = styled.thead`

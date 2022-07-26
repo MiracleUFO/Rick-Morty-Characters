@@ -93,7 +93,7 @@ const Table = () => {
     }, [dispatch, searchTerms, filters, allCharacters, filterResults, searchResults]);
 
     return (
-        <TableContainer data={filteredCharacters}>
+        <TableContainer>
             {filteredCharacters?.length > 0 ?
                 <>
                     <TableContent>
