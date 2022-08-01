@@ -12,15 +12,15 @@ import SearchBar from '../components/SearchBar';
 import FiltersTab from '../components/FilterTab';
 import Table from '../components/Table';
 import Message from '../components/Message';
-import Pagination from './Pagination';
+import Pagination from '../components/Pagination';
 
 const Home = () => {
-    const
+    const 
         dispatch = useDispatch(),
         { currentPage } = useSelector(state => state.pages),
         { charactersLength } = useSelector(state => state.characters),
 
-        { data, loading, error } = useQuery(GET_CHARACTERS, {
+        { data, loading, error, refetch } = useQuery(GET_CHARACTERS, {
             variables: {
                 page: currentPage
             }
@@ -28,11 +28,17 @@ const Home = () => {
     ;
 
     useEffect(() => {
+        if (currentPage) {
+            refetch();
+        }
+    }, [currentPage, refetch]);
+
+    useEffect(() => {
         if (data) {
             dispatch(updateCharactersLength(data?.characters.results.length));
             dispatch(setPages(data?.characters?.info?.pages));
         }
-    }, [data, dispatch]);
+    }, [dispatch, data, currentPage]);
 
     return (
         <>

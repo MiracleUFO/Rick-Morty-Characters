@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateCurrentPage } from '../redux/reducers/pages';
 
 import {
@@ -9,11 +9,14 @@ import {
     ArrowButton
 } from '../styles/Pagination';
 
-const Pagination = ({ pages, currentPage }) => {
-    const dispatch = useDispatch();
-    const [allPages, setAllPages] = useState([]);
-    const [currentDisplayedPages, setCurrentDisplayedPages] = useState([]);
-    const [currentDisplayedBatch, setCurrentDisplayedBatch] = useState(1);
+const Pagination = () => {
+    const 
+        dispatch = useDispatch(),
+        { pages, currentPage } = useSelector(state => state.pages),
+        [allPages, setAllPages] = useState([]),
+        [currentDisplayedPages, setCurrentDisplayedPages] = useState([]),
+        [currentDisplayedBatch, setCurrentDisplayedBatch] = useState(1)
+    ;
 
     // Creates array of pages [1, 2, 3, ...pages]
     useEffect(() => setAllPages([...Array(pages)].map((x, i) => i)), [pages]);

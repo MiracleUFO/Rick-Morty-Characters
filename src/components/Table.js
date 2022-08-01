@@ -19,11 +19,15 @@ const Table = ({ data }) => {
         { search, searchTerms } = useSelector(state => state.search),
         { filters } = useSelector(state => state.filter),
 
-        [results, updateResults] = useState(data),
+        [results, updateResults] = useState([]),
         [groupedData, setGroupedData] = useState([]),
         [searchResults, updateSearchResults] = useState([]),
         [filterResults, updateFilterResults] = useState([])
     ;
+
+    useEffect(() => {
+        updateResults([...data]);
+    }, [data]);
 
     // Groups characters by date for display
     const groupDataByDate = useCallback(() => {
@@ -47,28 +51,39 @@ const Table = ({ data }) => {
 
     // Calls groupDataByDate when results is updated
     useEffect(() => {
+        console.log('here');
         setGroupedData((groupDataByDate(results)));
     }, [results, groupDataByDate]);
 
-    // Combines search and filter results
+    /*// Combines search and filter results
     useEffect(() => {
-        const uniqueResults = combine(filterResults, searchResults);
-        updateResults((uniqueResults));
+        if (data) {
+            const uniqueResults = combine(filterResults, searchResults);
+            updateResults((uniqueResults));
+        }
     }, [filterResults, searchResults]);
 
     // Controls results in table to be displayed depending on search terms and filters having a value
     useEffect(() => {
-        const isEmpty = isAllNestedEmpty(filters);
-        dispatch(updateCharactersLength(results.length));
-        
-        if (searchTerms.length === 0 && isEmpty) {
-            updateResults([...data]);
-        } else if (searchTerms.length === 0) {
-            updateResults(filterResults);
-        } else if (isEmpty) {
-            updateResults(searchResults);
+        if (data) {
+            const isEmpty = isAllNestedEmpty(filters);
+            if (searchTerms.length === 0 && isEmpty) {
+                updateResults([...data]);
+            } else if (searchTerms.length === 0) {
+                updateResults(filterResults);
+            } else if (isEmpty) {
+                updateResults(searchResults);
+            }
         }
     }, [dispatch, searchTerms, filters, filterResults, searchResults, results.length, data]);
+
+    useEffect(() => {
+        if (data) {
+            console.log(results);
+            dispatch(updateCharactersLength(results.length));
+            console.log('hey')
+        }
+    }, [data, results.length]);*/
 
     return (
         <TableContainer>

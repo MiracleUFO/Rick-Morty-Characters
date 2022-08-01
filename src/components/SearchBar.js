@@ -7,11 +7,9 @@ import Input from '../styles/SearchBar';
 
 const SearchBar = () => {
     const [search, setSearch] = useState('');
-
-    const { allCharacters }  = useSelector(state => state.characters);
     const dispatch = useDispatch();
 
-    // Sorts search results to include only the characters that contain all search terms
+    /*// Sorts search results to include only the characters that contain all search terms
     const getMostOccuringCharacters = useCallback((givenCoincidences) => {
         const 
             noOfSearchTerms = search.trim().split(' ').length,
@@ -68,7 +66,11 @@ const SearchBar = () => {
         } else {
             dispatch(updateSearch([]));
         }
-    }, [search, dispatch, filterCharacters]);
+    }, [search, dispatch, filterCharacters]); */
+
+    useEffect(() => {
+        dispatch(updateSearch(search.trim()));
+    }, [dispatch, search]);
 
     return (
         <Input

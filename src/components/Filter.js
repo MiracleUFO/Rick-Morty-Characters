@@ -27,10 +27,10 @@ const Filter = ({ tag, values }) => {
 
     const 
         dispatch = useDispatch(),
-        { filters } = useSelector(state => state.filter),
-        { allCharacters }  = useSelector(state => state.characters);
+        { filters } = useSelector(state => state.filter)
+    ;
 
-    const filter = useCallback((filters) => {
+    /*const filter = useCallback((filters) => {
         const sameFilterResults = [], differentFilterResults = [];
 
         allCharacters.forEach(character => {
@@ -61,7 +61,7 @@ const Filter = ({ tag, values }) => {
         if (!isAllEmpty(filters[tag])) {
             filter(filters);
         }
-    }, [filters, filter, tag]);
+    }, [filters, filter, tag]);*/
 
     const handleChange = (e) => {
         const newFilters = JSON.parse(JSON.stringify(filters));
