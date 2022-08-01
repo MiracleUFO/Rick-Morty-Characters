@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Message = styled.div`
     width: 85vw;
-    margin: 40px auto 0;
+    margin: 30vh auto 0;
 `;
 
 const Loading = styled(Message)`

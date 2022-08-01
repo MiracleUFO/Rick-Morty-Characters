@@ -43,17 +43,18 @@ const Home = () => {
     return (
         <>
             <Header />
-            {!(loading || error?.message) ?
+            {(loading || error?.message) ?
+                <Message loading={loading} error={error} />
+            :
                 <>
                     <SearchBar />
                     <FiltersTab />
-                    {charactersLength ? 
+                    {charactersLength ?
                         <Table data={data?.characters.results} />
                     :   <Message dataLength={charactersLength} />
                     }
                     <Pagination />
                 </>
-            :   <Message loading={loading} error={error} />
             }
         </>
     );  

@@ -13,6 +13,7 @@ const CheckboxContainer = styled.div`
     padding-bottom: 20px;
     color: var(--light-grey);
     & label {
+        padding-left: 5%;
         &:hover {
             color: var(--darker-grey);
         }

@@ -6,6 +6,7 @@ import { combine } from '../helpers/getUniqueValues';
 import { isAllNestedEmpty } from '../helpers/isAllEmpty';
 
 import DateGroup from './DateGroup';
+import Message from './Message';
 
 import {
     TableContainer,
@@ -21,12 +22,15 @@ const Table = ({ data }) => {
 
         [results, updateResults] = useState([]),
         [groupedData, setGroupedData] = useState([]),
+
         [searchResults, updateSearchResults] = useState([]),
         [filterResults, updateFilterResults] = useState([])
     ;
 
     useEffect(() => {
-        updateResults([...data]);
+        if (data) {
+            updateResults([...data]);
+        }
     }, [data]);
 
     // Groups characters by date for display
@@ -107,7 +111,7 @@ const Table = ({ data }) => {
                     />
                 )}
             </TableContent>
-        </TableContainer>
+        </TableContainer> 
     );
 };
 
