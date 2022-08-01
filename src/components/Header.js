@@ -1,4 +1,4 @@
-import Rick from '../assets/images/rick.png';
+import Rick from '../assets/rick.png';
 import { HeaderContainer, HeaderImg } from '../styles/Header';
 
 const Header = () => (

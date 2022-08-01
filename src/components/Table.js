@@ -1,17 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCharacters, updateCharacters } from '../redux/reducers/characters';
-import { setPages } from '../redux/reducers/pages';
-
-import { useQuery } from '@apollo/client';
-import GET_CHARACTERS from '../queries/getCharacters';
+import { updateCharactersLength } from '../redux/reducers/characters';
 
 import { combine } from '../helpers/getUniqueValues';
 import { isAllNestedEmpty } from '../helpers/isAllEmpty';
 
 import DateGroup from './DateGroup';
-import Message from './Message';
-import Pagination from './Pagination';
 
 import {
     TableContainer,
@@ -19,39 +13,21 @@ import {
     TableHead,
 } from '../styles/Table';
 
-const Table = () => {
-    const [groupedData, setGroupedData] = useState([]);
+const Table = ({ data }) => {
+    const
+        dispatch = useDispatch(),
+        { search, searchTerms } = useSelector(state => state.search),
+        { filters } = useSelector(state => state.filter),
 
-    const filteredCharacters  = useSelector(state => state.characters.results);
-    const { allCharacters }  = useSelector(state => state.characters);
-    const { searchResults, searchTerms } = useSelector(state => state.search);
-    const { filterResults, filters } = useSelector(state => state.filter);
-    const { noOfPages, currentPage } = useSelector(state => state.pages);
+        [results, updateResults] = useState(data),
+        [groupedData, setGroupedData] = useState([]),
+        [searchResults, updateSearchResults] = useState([]),
+        [filterResults, updateFilterResults] = useState([])
+    ;
 
-    const dispatch = useDispatch();
-
-    const { data, loading, error } = useQuery(GET_CHARACTERS, {
-        variables: {
-            page: currentPage
-        }
-    });
-
-    const results  = data?.characters.results;
-    const pages = data?.characters?.info?.pages;
-
-    useEffect(() => {
-        dispatch(setPages(pages));
-    }, [dispatch, pages])
-
-    useEffect(() => {
-        if (results?.length > 0) {
-            dispatch(setCharacters(results));
-            dispatch(updateCharacters(results));
-        }
-    }, [results, dispatch]);
-
+    // Groups characters by date for display
     const groupDataByDate = useCallback(() => {
-        const groups = filteredCharacters.reduce((groups, character) => {
+        const groups = results.reduce((groups, character) => {
             const date = character.created.split('T')[0];
             if (!groups[date]) {
                 groups[date] = [];
@@ -67,64 +43,55 @@ const Table = () => {
             };
         });
         return groupArrays;
-    }, [filteredCharacters]);
+    }, [results]);
 
-    // Groups characters by date for display
+    // Calls groupDataByDate when results is updated
     useEffect(() => {
-        setGroupedData((groupDataByDate(filteredCharacters)));
-    }, [filteredCharacters, groupDataByDate]);
+        setGroupedData((groupDataByDate(results)));
+    }, [results, groupDataByDate]);
 
     // Combines search and filter results
     useEffect(() => {
         const uniqueResults = combine(filterResults, searchResults);
-        dispatch(updateCharacters(uniqueResults));
-    }, [dispatch, filterResults, searchResults]);
+        updateResults((uniqueResults));
+    }, [filterResults, searchResults]);
 
-    // Controls results to be displayed depending on search terms and filters having a value
+    // Controls results in table to be displayed depending on search terms and filters having a value
     useEffect(() => {
         const isEmpty = isAllNestedEmpty(filters);
+        dispatch(updateCharactersLength(results.length));
+        
         if (searchTerms.length === 0 && isEmpty) {
-            dispatch(updateCharacters(allCharacters))
+            updateResults([...data]);
         } else if (searchTerms.length === 0) {
-            dispatch(updateCharacters(filterResults))
+            updateResults(filterResults);
         } else if (isEmpty) {
-            dispatch(updateCharacters(searchResults))
+            updateResults(searchResults);
         }
-    }, [dispatch, searchTerms, filters, allCharacters, filterResults, searchResults]);
+    }, [dispatch, searchTerms, filters, filterResults, searchResults, results.length, data]);
 
     return (
         <TableContainer>
-            {filteredCharacters?.length > 0 ?
-                <>
-                    <TableContent>
-                        <TableHead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Avatar</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Status</th>
-                                <th>Location</th>
-                            </tr>
-                        </TableHead>
+            <TableContent>
+                <TableHead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Avatar</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Status</th>
+                        <th>Location</th>
+                    </tr>
+                </TableHead>
 
-                        {groupedData?.map((group, index) => 
-                            <DateGroup 
-                                key={index}
-                                date={group.date} 
-                                characters={group.characters}
-                            />
-                        )}
-                    </TableContent>
-                    <Pagination pages={noOfPages} currentPage={currentPage} />
-                </>
-            :
-                <Message 
-                    loading={loading}
-                    error={error}
-                    data={filteredCharacters}
-                />
-            }
+                {groupedData?.map((group, index) => 
+                    <DateGroup 
+                        key={index}
+                        date={group.date} 
+                        characters={group.characters}
+                    />
+                )}
+            </TableContent>
         </TableContainer>
     );
 };
