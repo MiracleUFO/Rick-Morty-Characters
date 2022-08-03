@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const PaginationContainer = styled.section`
     width: 90vw;
     margin: 50px auto;
+    margin-top: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
