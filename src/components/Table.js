@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { updateCharactersLength } from '../redux/reducers/characters';
+import { updateSearchTermsCountObject } from '../redux/reducers/search';
 
 import { combine, getUniqueValues } from '../helpers/getUniqueValues';
 import { getDuplicateValues } from '../helpers/getDuplicateValues';
@@ -19,7 +21,7 @@ import {
 const Table = ({ data }) => {
     const
         dispatch = useDispatch(),
-        { search, searchTerms } = useSelector(state => state.search),
+        { strict, search, searchTerms } = useSelector(state => state.search),
         { filters, currentFilterTag } = useSelector(state => state.filter),
         { charactersLength } = useSelector(state => state.characters),
 
@@ -70,8 +72,9 @@ const Table = ({ data }) => {
 
     // Filters results when search term is inputted
     useEffect(() => {
-        if (search.trim() && data.length) {
-            const tempResults = [];
+        if (search && data.length) {
+            const tempResults = [], termsCountObject = {};
+
             data.forEach(character => {
                 const 
                     { name, gender, status, location } = character,
@@ -84,19 +87,29 @@ const Table = ({ data }) => {
                             valueArray = value.split(' ')
                         ;
 
-                        if (value.includes(term)) {
-                            valueArray.forEach(val => {
-                                if (val.startsWith(term)) {
-                                    tempResults.push(character);
-                                }
-                            });
+                        if (strict) {
+                            if (value.toLowerCase().startsWith(search.toLowerCase())) {
+                                tempResults.push(character);
+                            }
+                        } else {
+                            if (value.includes(term)) {
+                                valueArray.forEach(val => {
+                                    if (val.startsWith(term)) {
+                                        tempResults.push(character);
+                                        termsCountObject[term] = termsCountObject[term] ? termsCountObject[term] + 1 : 1;
+                                    }
+                                });
+                            } else {
+                                termsCountObject[term] = termsCountObject[term] ?? 0;
+                            }
                         }
                     });
                 });     
             });
+            dispatch(updateSearchTermsCountObject(termsCountObject));
             updateSearchResults(getUniqueValues(tempResults));
         } else updateSearchResults([]);
-    }, [data, search, searchTerms]);
+    }, [data, dispatch, search, searchTerms, strict]);
 
     // Filters results when filters are changed
     useEffect(() => {
@@ -142,6 +155,7 @@ const Table = ({ data }) => {
         }   else if ((!filterResults.length && !isFalsy) || (!searchResults.length && search)) updateResults([]);
             else if (filterResults.length) updateResults(filterResults)
             else if (searchResults.length) updateResults(searchResults)
+            else if (!filterResults.length && !searchResults.length) updateResults(data)
         ;
     }, [data, search, filters, searchResults, filterResults]);
 
@@ -168,7 +182,7 @@ const Table = ({ data }) => {
                         />
                     )}
                 </TableContent>
-            :   <Message dataLength={charactersLength} />
+            :   <Message dataLength={charactersLength} search={search} strict={strict} />
             }
         </TableContainer>
     );
