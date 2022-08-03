@@ -16,6 +16,14 @@ const Message = ({
 }) => {
     const dispatch = useDispatch();
 
+    const scrollToPagination = () => {
+        const top = document.getElementById('pagination-container').getBoundingClientRect().top;
+        window.scroll({
+            top: top,
+            behavior: 'smooth'
+        }); 
+    };
+
     if (error?.message) {
         return <Error><AiOutlineWarning /><p>{error?.message}. Try Again.</p></Error>;
     } else if (loading) {
@@ -24,9 +32,9 @@ const Message = ({
     
     if (!dataLength && !loading && !error) {
         return (
-            <Warning>
+            <Warning onClick={scrollToPagination}>
                 <AiOutlineWarning />
-                <p>No data found on page.<br/>(Try different page?)</p>
+                <p>No data found on page.<br/><span>(Try different page?)</span></p>
                 {search && strict ? 
                     <p className='disable-strict-text' onClick={() => dispatch(updateStrict(false))}>
                         Or disable strict search mode

@@ -39,7 +39,7 @@ const Pagination = () => {
     return (
             <>
                 {pages ? 
-                    <PaginationContainer>
+                    <PaginationContainer id='pagination-container'>
                         <ArrowButton 
                             disabled={currentDisplayedBatch === 1}
                             onClick={() => setCurrentDisplayedBatch(currentDisplayedBatch - 1)}

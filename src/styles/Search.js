@@ -62,32 +62,49 @@ const Input = styled.input`
 
 const TabContainer = styled.div`
     display: flex;
-    width: 78vw;
+    width: 80vw;
     margin: 10px auto 30px;
     position: relative;
     bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    transition: var(--default-transition);
+
+    @media (min-width: 800px) {
+        width: 78vw;
+        justify-content: flex-start;
+    }
 `;
 
 const Tab = styled.div`
     position: relative;
-    background-color: rgb(0, 145, 234);
+    background-color: rgba(0, 176, 255, 95%);
     min-width: max-content;
     padding: 0 5px;
-    width: 5em;
+    width: 5vw;
     font-size: 0.9em;
     color: aliceblue;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    margin-right: 3em;
+    margin-right: 1.5vw;
+    margin-bottom: 5px;
     height: 2em;
     border-radius: 2em;
+    
+    & .term {
+        max-width: 30vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
     & * {
         margin-left: 10px;
     }
 
     & .count {
+        min-width: max-content;
         width: 1.2em;
         height: 1.2em;
         display: flex;
