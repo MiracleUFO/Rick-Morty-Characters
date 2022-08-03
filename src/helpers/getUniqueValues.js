@@ -22,18 +22,3 @@ const intersect = (arrA, arrB) => {
 export const combine = (arrA, arrB) => {
     return getUniqueValues(intersect(arrA, arrB));
 };
-
-const intersectFilters = (sameFilterResults, differentFilterResults) => {
-    if (sameFilterResults.length === 0 || differentFilterResults.length === 0) {
-        return sameFilterResults;
-    }
-
-    const intersection = sameFilterResults.map(a => {
-        return differentFilterResults.filter(b => b.id === a.id);
-    });
-    return Array.from(intersection.flat());
-}
-
-export const combineFilters = (sameFilterResults, differentFilterResults) => {
-    return getUniqueValues(intersectFilters(sameFilterResults, differentFilterResults));
-}

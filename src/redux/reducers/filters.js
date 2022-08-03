@@ -20,7 +20,8 @@ const initialState = {
             lastFifteenDays: false,
             lastDay: false,
         }
-    }
+    },
+    currentFilterTag: ''
 };
 
 export const filterSlice = createSlice({
@@ -29,10 +30,13 @@ export const filterSlice = createSlice({
     reducers: {
         updateFilters: (state, action) => {
             state.filters = Object.assign({}, action.payload);
+        },
+        updateCurrentFilterTag: (state, action) => {
+            state.currentFilterTag = action.payload
         }
     }
 });
 
-export const { updateFilters } = filterSlice.actions;
+export const { updateFilters, updateCurrentFilterTag } = filterSlice.actions;
 
 export default filterSlice.reducer;

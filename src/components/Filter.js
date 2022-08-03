@@ -1,12 +1,7 @@
-import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { updateFilters, updateCurrentFilterTag } from '../redux/reducers/filters';
 
-import { updateFilters, updateFilterResults } from '../redux/reducers/filters';
-
-import { isAllEmpty } from '../helpers/isAllEmpty';
 import { initialCaps } from '../helpers/initialCaps';
-import { isInTimeFrame } from '../helpers/isInTimeFrame';
-import { combineFilters } from '../helpers/getUniqueValues';
 
 import { FiFilter } from 'react-icons/fi';
 
@@ -30,43 +25,11 @@ const Filter = ({ tag, values }) => {
         { filters } = useSelector(state => state.filter)
     ;
 
-    /*const filter = useCallback((filters) => {
-        const sameFilterResults = [], differentFilterResults = [];
-
-        allCharacters.forEach(character => {
-            const
-                { id, name, gender, status, location, created, image } = character,
-                newCharacter = { id, name, gender, status, location, created, image };
-
-            Object.entries(filters).forEach(filter => {
-                const newTag = filter[0];
-                for (const [k, v] of Object.entries(filter[1])) {
-                    if (v) {
-                        if (newTag !== tag) {
-                            if ((newCharacter[newTag].toLowerCase() === k || isInTimeFrame(k, newCharacter.created))) {
-                                differentFilterResults.push(newCharacter);
-                            }  
-                        } if (newCharacter[tag].toLowerCase() === k || isInTimeFrame(k, newCharacter.created)) {
-                            sameFilterResults.push(newCharacter);
-                        }
-                    }
-                }
-            });
-        });
-
-        dispatch(updateFilterResults(combineFilters(sameFilterResults, differentFilterResults)));
-    }, [allCharacters, dispatch, tag]);
-
-    useEffect(() => {
-        if (!isAllEmpty(filters[tag])) {
-            filter(filters);
-        }
-    }, [filters, filter, tag]);*/
-
     const handleChange = (e) => {
         const newFilters = JSON.parse(JSON.stringify(filters));
         newFilters[tag][e.target.value] = e.target.checked;
         dispatch(updateFilters(newFilters));
+        dispatch(updateCurrentFilterTag([tag, e.target.value]));
     };
 
     return (
@@ -87,7 +50,6 @@ const Filter = ({ tag, values }) => {
                             checked={filters[tag][key]}
                             onChange={handleChange}
                         />
-                        
                         <label htmlFor={`checkbox-${key}-${index}`}>
                             {initialCaps(key)}
                         </label>

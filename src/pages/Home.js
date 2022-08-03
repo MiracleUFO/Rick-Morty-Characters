@@ -18,7 +18,6 @@ const Home = () => {
     const 
         dispatch = useDispatch(),
         { currentPage } = useSelector(state => state.pages),
-        { charactersLength } = useSelector(state => state.characters),
 
         { data, loading, error, refetch } = useQuery(GET_CHARACTERS, {
             variables: {
@@ -49,10 +48,7 @@ const Home = () => {
                 <>
                     <SearchBar />
                     <FiltersTab />
-                    {charactersLength ?
-                        <Table data={data?.characters.results} />
-                    :   <Message dataLength={charactersLength} />
-                    }
+                    <Table data={data?.characters.results} />
                     <Pagination />
                 </>
             }

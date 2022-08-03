@@ -7,7 +7,7 @@ const PaginationContainer = styled.section`
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
-
+    
     @media (min-width: 800px) {
         width: 80vw;
     }
@@ -27,6 +27,14 @@ const PaginationButton = styled.button`
     color: ${props => props.currentPage || props.disabled ? 'var(--light-grey)' : 'var(--darker-grey)'};
     border: ${props => props.currentPage || props.disabled ? '1px solid lightgrey' : '1px solid lightblue'};
     box-shadow: 2px 4px 2px 0.5px rgb(0 0 0 / 4%);
+
+    @media (min-width: 800px) {
+        &:hover {
+            color: ${props => props.currentPage || props.disabled ? 'var(--light-grey)' : '#3ea4c4'};
+            transform: ${props => props.currentPage || props.disabled ? 'none' : 'scale(1.15)'};
+            border: ${props => props.currentPage || props.disabled ? '1px solid lightgrey' : '2px solid rgba(62, 164, 196, 0.3)'};
+        }
+    }
 `;
 
 const PageButton = styled(PaginationButton)`

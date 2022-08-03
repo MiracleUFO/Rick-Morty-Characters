@@ -13,7 +13,8 @@ const CheckboxContainer = styled.div`
     padding-bottom: 20px;
     color: var(--light-grey);
     & label {
-        padding-left: 5%;
+        padding-left: 0.2em;
+        font-size: 0.9em;
         &:hover {
             color: var(--darker-grey);
         }
@@ -36,7 +37,6 @@ const CheckboxesCard = styled.div`
     background-color: white;
     border-radius: 10px;
     z-index: 20;
-    font-size: 0.9em;
     top: 55%;
     right: -20px;
     box-shadow: 3px 5px 2px 0.5px rgba(0, 0, 0, 3%);
