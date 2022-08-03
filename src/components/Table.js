@@ -1,17 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCharacters, updateCharacters } from '../redux/reducers/characters';
-import { setPages } from '../redux/reducers/pages';
+import { updateCharactersLength } from '../redux/reducers/characters';
 
-import { useQuery } from '@apollo/client';
-import GET_CHARACTERS from '../queries/getCharacters';
-
-import { combine } from '../helpers/getUniqueValues';
-import { isAllNestedEmpty } from '../helpers/isAllEmpty';
+import { combine, getUniqueValues } from '../helpers/getUniqueValues';
+import { getDuplicateValues } from '../helpers/getDuplicateValues';
+import { isAllNestedFalsy } from '../helpers/isAllFalsy';
+import { isInTimeFrame } from '../helpers/isInTimeFrame';
 
 import DateGroup from './DateGroup';
 import Message from './Message';
-import Pagination from './Pagination';
 
 import {
     TableContainer,
@@ -19,111 +16,159 @@ import {
     TableHead,
 } from '../styles/Table';
 
-const Table = () => {
-    const [groupedData, setGroupedData] = useState([]);
+const Table = ({ data }) => {
+    const
+        dispatch = useDispatch(),
+        { search, searchTerms } = useSelector(state => state.search),
+        { filters, currentFilterTag } = useSelector(state => state.filter),
+        { charactersLength } = useSelector(state => state.characters),
 
-    const filteredCharacters  = useSelector(state => state.characters.results);
-    const { allCharacters }  = useSelector(state => state.characters);
-    const { searchResults, searchTerms } = useSelector(state => state.search);
-    const { filterResults, filters } = useSelector(state => state.filter);
-    const { noOfPages, currentPage } = useSelector(state => state.pages);
+        [results, updateResults] = useState([]),
+        [groupedData, setGroupedData] = useState([]),
 
-    const dispatch = useDispatch();
-
-    const { data, loading, error } = useQuery(GET_CHARACTERS, {
-        variables: {
-            page: currentPage
-        }
-    });
-
-    const results  = data?.characters.results;
-    const pages = data?.characters?.info?.pages;
+        [searchResults, updateSearchResults] = useState([]),
+        [filterResults, updateFilterResults] = useState([])
+    ;
 
     useEffect(() => {
-        dispatch(setPages(pages));
-    }, [dispatch, pages])
-
-    useEffect(() => {
-        if (results?.length > 0) {
-            dispatch(setCharacters(results));
-            dispatch(updateCharacters(results));
+        if (data) {
+            updateResults([...data]);
         }
-    }, [results, dispatch]);
-
-    const groupDataByDate = useCallback(() => {
-        const groups = filteredCharacters.reduce((groups, character) => {
-            const date = character.created.split('T')[0];
-            if (!groups[date]) {
-                groups[date] = [];
-            }
-            groups[date].push(character);
-            return groups;
-        }, {});
-          
-        const groupArrays = Object.keys(groups).map((date) => {
-            return {
-                date,
-                characters: groups[date]
-            };
-        });
-        return groupArrays;
-    }, [filteredCharacters]);
+    }, [data]);
 
     // Groups characters by date for display
+    const groupDataByDate = useCallback(() => {
+        if (results) {
+            const groups = results.reduce((groups, character) => {
+                const date = character.created.split('T')[0];
+                if (!groups[date]) {
+                    groups[date] = [];
+                }
+                groups[date].push(character);
+                return groups;
+            }, {});
+              
+            const groupArrays = Object.keys(groups).map((date) => {
+                return {
+                    date,
+                    characters: groups[date]
+                };
+            });
+            return groupArrays;
+        }
+    }, [results]);
+
+    // Calls groupDataByDate each time results is updated
     useEffect(() => {
-        setGroupedData((groupDataByDate(filteredCharacters)));
-    }, [filteredCharacters, groupDataByDate]);
+        setGroupedData((groupDataByDate(results)));
+    }, [results, groupDataByDate]);
+
+    // Changes characters length in store when results is updated
+    useEffect(() => {
+        if (data.length) dispatch(updateCharactersLength(results?.length));
+    }, [data.length, dispatch, results?.length]);
+
+    // Filters results when search term is inputted
+    useEffect(() => {
+        if (search.trim() && data.length) {
+            const tempResults = [];
+            data.forEach(character => {
+                const 
+                    { name, gender, status, location } = character,
+                    newCharacter = { name, gender, status, location }
+                ;
+                Object.values(newCharacter).forEach(v => {
+                    searchTerms.forEach(term => {
+                        const 
+                            value = typeof v === 'string' ? v.toLowerCase() : v.name.toLowerCase(),
+                            valueArray = value.split(' ')
+                        ;
+
+                        if (value.includes(term)) {
+                            valueArray.forEach(val => {
+                                if (val.startsWith(term)) {
+                                    tempResults.push(character);
+                                }
+                            });
+                        }
+                    });
+                });     
+            });
+            updateSearchResults(getUniqueValues(tempResults));
+        } else updateSearchResults([]);
+    }, [data, search, searchTerms]);
+
+    // Filters results when filters are changed
+    useEffect(() => {
+        if (!isAllNestedFalsy(filters)) {
+            let allFilterResults = [];
+            const differentFilterResults = [];
+
+            data.forEach(character => {
+                const
+                    { id, name, gender, status, location, created } = character,
+                    newCharacter = { id, name, gender, status, location, created };
+
+                Object.entries(filters).forEach(filter => {
+                    const newTag = filter[0];
+
+                    for (const [k, v] of Object.entries(filter[1])) {
+                        if (v) {
+                            if ((newCharacter[newTag].toLowerCase() === k || isInTimeFrame(k, newCharacter.created))) {
+                                allFilterResults.push(character);
+                                if (newTag === currentFilterTag[0]) {
+                                    differentFilterResults.push(character);
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            if (!differentFilterResults.length && filters[currentFilterTag[0]][currentFilterTag[1]]) allFilterResults = [];
+            else allFilterResults = getDuplicateValues(allFilterResults).length ? getDuplicateValues(allFilterResults) : allFilterResults;
+
+            updateFilterResults(allFilterResults); 
+        } else updateFilterResults([])
+    }, [data, currentFilterTag, filters]);
 
     // Combines search and filter results
     useEffect(() => {
-        const uniqueResults = combine(filterResults, searchResults);
-        dispatch(updateCharacters(uniqueResults));
-    }, [dispatch, filterResults, searchResults]);
+        const isFalsy = isAllNestedFalsy(filters);
 
-    // Controls results to be displayed depending on search terms and filters having a value
-    useEffect(() => {
-        const isEmpty = isAllNestedEmpty(filters);
-        if (searchTerms.length === 0 && isEmpty) {
-            dispatch(updateCharacters(allCharacters))
-        } else if (searchTerms.length === 0) {
-            dispatch(updateCharacters(filterResults))
-        } else if (isEmpty) {
-            dispatch(updateCharacters(searchResults))
-        }
-    }, [dispatch, searchTerms, filters, allCharacters, filterResults, searchResults]);
+        if (filterResults.length && searchResults.length) {
+            const uniqueResults = combine(filterResults, searchResults);
+            updateResults((uniqueResults));
+        }   else if ((!filterResults.length && !isFalsy) || (!searchResults.length && search)) updateResults([]);
+            else if (filterResults.length) updateResults(filterResults)
+            else if (searchResults.length) updateResults(searchResults)
+        ;
+    }, [data, search, filters, searchResults, filterResults]);
 
     return (
         <TableContainer>
-            {filteredCharacters?.length > 0 ?
-                <>
-                    <TableContent>
-                        <TableHead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Avatar</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Status</th>
-                                <th>Location</th>
-                            </tr>
-                        </TableHead>
+            {charactersLength ?
+                <TableContent>
+                    <TableHead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Avatar</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                        </tr>
+                    </TableHead>
 
-                        {groupedData?.map((group, index) => 
-                            <DateGroup 
-                                key={index}
-                                date={group.date} 
-                                characters={group.characters}
-                            />
-                        )}
-                    </TableContent>
-                    <Pagination pages={noOfPages} currentPage={currentPage} />
-                </>
-            :
-                <Message 
-                    loading={loading}
-                    error={error}
-                    data={filteredCharacters}
-                />
+                    {groupedData?.map((group, index) => 
+                        <DateGroup 
+                            key={index}
+                            date={group.date} 
+                            characters={group.characters}
+                        />
+                    )}
+                </TableContent>
+            :   <Message dataLength={charactersLength} />
             }
         </TableContainer>
     );
