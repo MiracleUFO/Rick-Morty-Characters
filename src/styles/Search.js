@@ -68,6 +68,7 @@ const TabContainer = styled.div`
     bottom: 30px;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    transition: var(--default-transition);
 
     @media (min-width: 800px) {
         width: 78vw;
@@ -77,7 +78,7 @@ const TabContainer = styled.div`
 
 const Tab = styled.div`
     position: relative;
-    background-color: rgb(0, 145, 234);
+    background-color: rgba(0, 176, 255, 95%);
     min-width: max-content;
     padding: 0 5px;
     width: 5vw;
