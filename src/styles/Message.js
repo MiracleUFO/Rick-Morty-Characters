@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const Message = styled.div`
     width: 85vw;
     margin: 10vh auto 25vh;
+    cursor: pointer;
 `;
 
 const Loading = styled(Message)`

@@ -22,7 +22,7 @@ const SearchTab = ({ setSearchBar }) => {
                 Object.entries(searchTermsCount).map(([key, value], index) =>
                     <Tab key={index}>
                         <span className='x-icon' onClick={() => removeTerm(key)}>x</span>
-                        <p>{key}</p>
+                        <p className='term'>{key}</p>
                         <div className='count'>{value}</div>
                     </Tab>
                 )
