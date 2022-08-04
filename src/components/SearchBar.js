@@ -12,8 +12,8 @@ import 'tippy.js/dist/tippy.css';
 const SearchBar = () => {
     const 
         dispatch = useDispatch(),
-        [search, setSearch] = useState(''),
-        { strict } = useSelector(state => state.search),
+        { strict, search } = useSelector(state => state.search),
+        [searchLocal, setSearchLocal] = useState(search),
 
         [noOfTimesFocus, setNoOfTimesFocus] = useState(0),
         [tooltipVisible, setTooltipVisible] = useState(false),
@@ -45,8 +45,8 @@ const SearchBar = () => {
     }, [noOfTimesFocus, strict]);
 
     useEffect(() => {
-        dispatch(updateSearch(search.trim()));
-    }, [dispatch, search]);
+        dispatch(updateSearch(searchLocal.trim()));
+    }, [dispatch, searchLocal]);
 
     return (
         <>
@@ -54,16 +54,16 @@ const SearchBar = () => {
                 <Tooltip visible={tooltipVisible} content={tooltipContent}>
                     <Input
                         id='search'
-                        value={search}
+                        value={searchLocal}
                         placeholder='Search characters...'
-                        onChange={(e) => setSearch(e.target.value ? e.target.value.trimStart() : '')}
+                        onChange={(e) => setSearchLocal(e.target.value ? e.target.value.trimStart() : '')}
                         onFocus={() => setNoOfTimesFocus(noOfTimesFocus + 1)}
                         onBlur={() => setTooltipVisible(false)}
                     />
                 </Tooltip>
                 <GiArcheryTarget onClick={toggleStrict}  />
             </InputContainer>
-            <SearchTab setSearchBar={setSearch} />
+            <SearchTab setSearchBar={setSearchLocal} />
         </>
     );
 };
