@@ -9,7 +9,7 @@ export const charactersSlice = createSlice({
   initialState,
   reducers: {
     updateCharactersLength: (state, action) => {
-        state.charactersLength = action.payload;
+      state.charactersLength = action.payload;
     }
   },
 });

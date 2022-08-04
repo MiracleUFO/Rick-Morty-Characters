@@ -67,7 +67,7 @@ const Table = ({ data }) => {
 
     // Changes characters length in store when results is updated
     useEffect(() => {
-        if (data.length) dispatch(updateCharactersLength(results?.length));
+        if (data.length) dispatch(updateCharactersLength(results?.length))
     }, [data.length, dispatch, results?.length]);
 
     // Filters results when search term is inputted
