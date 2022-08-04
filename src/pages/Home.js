@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useQuery } from '@apollo/client';
@@ -18,6 +18,7 @@ const Home = () => {
     const 
         dispatch = useDispatch(),
         { currentPage } = useSelector(state => state.pages),
+        { gender, status } = useSelector(state => state.filters),
 
         { data, loading, error, refetch } = useQuery(GET_CHARACTERS, {
             variables: {
@@ -25,6 +26,12 @@ const Home = () => {
             }
         })
     ;
+
+    useEffect(() => {
+        refetch({
+            gender: gender
+        });
+    }, [gender, refetch, status]);
 
     useEffect(() => {
         if (currentPage) {
