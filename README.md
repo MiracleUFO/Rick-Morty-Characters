@@ -7,4 +7,4 @@ There's a pagination component at the bottom to help you navigate.
 
 Have fun!
 
-Live at https://bit.ly/rick-and-morty-search
+Live at https://bit.ly/rick-and-morty-search 🔆
