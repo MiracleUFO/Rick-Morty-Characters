@@ -24,10 +24,8 @@ const Table = ({ data }) => {
         { strict, search, searchTerms } = useSelector(state => state.search),
         { filters, currentFilterTag } = useSelector(state => state.filter),
         { charactersLength } = useSelector(state => state.characters),
-
         [results, updateResults] = useState([]),
         [groupedData, setGroupedData] = useState([]),
-
         [searchResults, updateSearchResults] = useState([]),
         [filterResults, updateFilterResults] = useState([])
     ;

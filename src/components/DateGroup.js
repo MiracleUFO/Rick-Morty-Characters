@@ -1,5 +1,4 @@
 import moment from 'moment';
-
 import { GroupTitle } from '../styles/Table';
 
 const DateGroup = ({ date, characters }) => {

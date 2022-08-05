@@ -4,7 +4,7 @@ import { updateSearch, updateStrict } from '../redux/reducers/search';
 
 import Tooltip from './Tooltip';
 import SearchTab from './SearchTab';
-import {GiArcheryTarget } from 'react-icons/gi';
+import { GiArcheryTarget } from 'react-icons/gi';
 
 import { InputContainer, Input } from '../styles/Search';
 import 'tippy.js/dist/tippy.css';
@@ -14,7 +14,6 @@ const SearchBar = () => {
         dispatch = useDispatch(),
         { strict, search } = useSelector(state => state.search),
         [searchLocal, setSearchLocal] = useState(search),
-
         [noOfTimesFocus, setNoOfTimesFocus] = useState(0),
         [tooltipVisible, setTooltipVisible] = useState(false),
         toggleStrict = () => dispatch(updateStrict(!strict)),

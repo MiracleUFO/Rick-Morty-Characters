@@ -5,7 +5,6 @@ import { Tab } from '../styles/Filter';
 
 const FiltersTab = () => {
     const { filters } = useSelector(state => state.filter);
-
     return (
         <Tab>
             {Object.entries(filters).map(([key, value], index) =>

@@ -19,6 +19,4 @@ const intersect = (arrA, arrB) => {
     return Array.from(intersection.flat());
 };
 
-export const combine = (arrA, arrB) => {
-    return getUniqueValues(intersect(arrA, arrB));
-};
+export const combine = (arrA, arrB) => getUniqueValues(intersect(arrA, arrB));
