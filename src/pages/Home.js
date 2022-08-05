@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/client';
 import GET_CHARACTERS from '../queries/getCharacters';
 
 import { setPages } from '../redux/reducers/pages';
-import { updateCharactersLength } from '../redux/reducers/characters';
 
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
@@ -33,10 +32,7 @@ const Home = () => {
     }, [currentPage, refetch]);
 
     useEffect(() => {
-        if (data) {
-            dispatch(updateCharactersLength(data?.characters.results.length));
-            dispatch(setPages(data?.characters?.info?.pages));
-        }
+        if (data) dispatch(setPages(data?.characters?.info?.pages));
     }, [dispatch, data, currentPage]);
 
     return (
