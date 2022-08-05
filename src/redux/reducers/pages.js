@@ -13,7 +13,10 @@ export const pagesSlice = createSlice({
       state.pages = action.payload;
     },
     updateCurrentPage: (state, action) => {
-        state.currentPage = action.payload;
+      return {
+        ...state,
+        currentDisplayedBatch: [...action.payload],
+      }
     }
   },
 })
