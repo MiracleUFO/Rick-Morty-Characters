@@ -14,7 +14,6 @@ const SearchBar = () => {
         dispatch = useDispatch(),
         { strict, search } = useSelector(state => state.search),
         [searchLocal, setSearchLocal] = useState(search),
-
         [noOfTimesFocus, setNoOfTimesFocus] = useState(0),
         [tooltipVisible, setTooltipVisible] = useState(false),
         toggleStrict = () => dispatch(updateStrict(!strict)),

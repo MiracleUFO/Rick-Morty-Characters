@@ -1,3 +1,1 @@
-export const getDuplicateValues = (arr) => {
-    return arr.filter((el, index) => arr.indexOf(el) !== index);
-};
+export const getDuplicateValues = (arr) => arr.filter((el, index) => arr.indexOf(el) !== index);

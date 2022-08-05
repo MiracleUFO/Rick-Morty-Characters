@@ -29,6 +29,11 @@ export const pagesSlice = createSlice({
   }
 });
 
-export const { setPages, updateCurrentPage, updateDisplayedPageNumbers, setCurrentDisplayedBatch } = pagesSlice.actions;
+export const {
+  setPages,
+  updateCurrentPage,
+  updateDisplayedPageNumbers,
+  setCurrentDisplayedBatch
+} = pagesSlice.actions;
 
 export default pagesSlice.reducer;
