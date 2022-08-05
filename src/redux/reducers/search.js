@@ -1,5 +1,6 @@
+import { createSlice } from '@reduxjs/toolkit';
+
 import { getUniqueValues } from '../../helpers/getUniqueValues';
-import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   strict: false,
@@ -13,8 +14,11 @@ export const searchSlice = createSlice({
   initialState,
   reducers: {
     updateSearch: (state, action) => {
-      state.search = action.payload.toLowerCase();
-      state.searchTerms = getUniqueValues(action.payload.trim().toLowerCase().split(' '));
+      return {
+        ...state,
+        search: action.payload.toLowerCase(),
+        searchTerms: getUniqueValues(action.payload.trim().toLowerCase().split(' ')), // immutably sets searchTerms array
+      }
     },
     updateStrict: (state, action) => {
       state.strict = action.payload;
@@ -25,6 +29,10 @@ export const searchSlice = createSlice({
   },
 });
 
-export const { updateSearch, updateStrict, updateSearchTermsCountObject } = searchSlice.actions;
+export const {
+  updateSearch,
+  updateStrict,
+  updateSearchTermsCountObject
+} = searchSlice.actions;
 
 export default searchSlice.reducer;

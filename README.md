@@ -1,4 +1,4 @@
-# Find out everything about the Rick & Morty shows characters
+# Find out everything about the Rick & Morty show's characters
 Use the filter tab to filter through character properties, and search up characters on different pages.
 
 If you don't find who you're looking for on a page, don't worry (yet) go to another page.

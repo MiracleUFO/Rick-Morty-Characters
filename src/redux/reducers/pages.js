@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   pages: 0,
   currentPage: 1,
-  currentDisplayedBatch: 1,
+  currentDisplayedBatchNumber: 1,
   displayedPageNumbers: [],
 }
 
@@ -18,14 +18,22 @@ export const pagesSlice = createSlice({
       state.currentPage = action.payload;
     },
     updateDisplayedPageNumbers: (state, action) => {
-      state.displayedPageNumbers = action.payload;
+      return {
+        ...state,
+        displayedPageNumbers: [...action.payload],
+      };
     },
-    setCurrentDisplayedBatch: (state, action) => {
-      state.currentDisplayedBatch = action.payload;
+    setCurrentDisplayedBatchNumber: (state, action) => {
+      state.currentDisplayedBatchNumber = action.payload;
     },
   }
 });
 
-export const { setPages, updateCurrentPage, updateDisplayedPageNumbers, setCurrentDisplayedBatch } = pagesSlice.actions;
+export const {
+  setPages,
+  updateCurrentPage,
+  updateDisplayedPageNumbers,
+  setCurrentDisplayedBatchNumber
+} = pagesSlice.actions;
 
 export default pagesSlice.reducer;

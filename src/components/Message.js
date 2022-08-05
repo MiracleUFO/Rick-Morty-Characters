@@ -24,11 +24,8 @@ const Message = ({
         }); 
     };
 
-    if (error?.message) {
-        return <Error><AiOutlineWarning /><p>{error?.message}. Try Again.</p></Error>;
-    } else if (loading) {
-        return <LoadingImg src={loader} alt='Loader... bubbling beaker' />;
-    }
+    if (error?.message) return <Error><AiOutlineWarning /><p>{error?.message}. Try Again.</p></Error>;
+        else if (loading) return <LoadingImg src={loader} alt='Loader... bubbling beaker' />;
     
     if (!dataLength && !loading && !error) {
         return (
