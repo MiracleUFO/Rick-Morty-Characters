@@ -18,7 +18,10 @@ export const pagesSlice = createSlice({
       state.currentPage = action.payload;
     },
     updateDisplayedPageNumbers: (state, action) => {
-      state.displayedPageNumbers = action.payload;
+      return {
+        ...state,
+        displayedPageNumbers: [...action.payload],
+      };
     },
     setCurrentDisplayedBatch: (state, action) => {
       state.currentDisplayedBatch = action.payload;
