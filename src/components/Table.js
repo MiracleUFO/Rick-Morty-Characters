@@ -5,8 +5,9 @@ import { updateCharactersLength } from '../redux/reducers/characters';
 import { updateSearchTermsCountObject } from '../redux/reducers/search';
 
 import { combine, getUniqueValues } from '../helpers/getUniqueValues';
+import { findFiltersIntersection } from '../helpers/findFiltersIntersection';
 import { getDuplicateValues } from '../helpers/getDuplicateValues';
-import { isAllNestedFalsy } from '../helpers/isAllFalsy';
+import { isAllFalsy, isAllNestedFalsy } from '../helpers/isAllFalsy';
 import { isInTimeFrame } from '../helpers/isInTimeFrame';
 
 import DateGroup from './DateGroup';
@@ -111,36 +112,38 @@ const Table = ({ data }) => {
 
     // Filters results when filters are changed
     useEffect(() => {
-        if (!isAllNestedFalsy(filters)) {
-            let allFilterResults = [];
-            const differentFilterResults = [];
+        if (isAllNestedFalsy(filters)) {
+            updateFilterResults([]);
+            return;
+        }
 
-            data.forEach(character => {
-                const
-                    { id, name, gender, status, location, created } = character,
-                    newCharacter = { id, name, gender, status, location, created };
-
-                Object.entries(filters).forEach(filter => {
-                    const newTag = filter[0];
-
-                    for (const [k, v] of Object.entries(filter[1])) {
-                        if (v) {
-                            if ((newCharacter[newTag].toLowerCase() === k || isInTimeFrame(k, newCharacter.created))) {
-                                allFilterResults.push(character);
-                                if (newTag === currentFilterTag[0]) {
-                                    differentFilterResults.push(character);
-                                }
-                            }
+        const filteredResults = Object.entries(filters).map(([filterCategory, filterValues]) => {
+            if (isAllFalsy(filterValues)) return null;
+            return data.filter(character => {
+                return Object.entries(filterValues).some(([filterValue, isSelected]) => {
+                    if (isSelected) {
+                        if (filterCategory === 'created') {
+                            return isInTimeFrame(filterValue, character.created);
+                        } else {
+                            return character[filterCategory].toLowerCase() === filterValue;
                         }
                     }
+                    return false;
                 });
             });
+        });
 
-            if (!differentFilterResults.length && filters[currentFilterTag[0]][currentFilterTag[1]]) allFilterResults = [];
-            else allFilterResults = getDuplicateValues(allFilterResults).length ? getDuplicateValues(allFilterResults) : allFilterResults;
+        const allFilterResults = findFiltersIntersection(
+            filteredResults.filter(result => Array.isArray(result))
+        );
+        const uniqueResults = (
+            getDuplicateValues(allFilterResults).length
+            ? getDuplicateValues(allFilterResults)
+            : allFilterResults
+        );
 
-            updateFilterResults(allFilterResults); 
-        } else updateFilterResults([])
+    
+        updateFilterResults(uniqueResults);
     }, [data, currentFilterTag, filters]);
 
     // Combines search and filter results
